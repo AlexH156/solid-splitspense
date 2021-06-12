@@ -154,6 +154,7 @@ async function writeProfile() {
 
 async function writeData(){
   const name = document.getElementById("input_name").value;
+  const value = document.getElementById("input_value").valueAsNumber;
   // 1a. Start with an existing Thing (i.e., profile).
   // Note: Login code has been omitted for brevity. See the Prerequisite section above.
   // ...
@@ -166,7 +167,7 @@ async function writeData(){
   // That is, setStringNoLocale and addStringNoLocale return a new Thing and
   // - profile remains unchanged and 
   // - updatedProfile is changed only because it is explicitly set to the object returned from addStringNoLocale.
-  const newInt = 1 + await newtest2(name);
+  const newInt = value + await newtest2(name);
   let updatedProfile = setInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" +name, newInt);
   //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
   //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
@@ -309,8 +310,10 @@ async function newtest(){
 }
 
 async function newtest2(name){
+  var machprint = false;
   if (name == null){
     name = document.getElementById("webID").value;
+    machprint = true;
   }
   const myDataset = await getSolidDataset(
     turtledatei, {
@@ -321,7 +324,9 @@ async function newtest2(name){
     turtledatei
   );
   const fn = getInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" + name);
-  document.getElementById("labelFN").textContent = fn;
+  if (machprint){
+      document.getElementById("labelFN").textContent = fn;
+  }
   return fn;
 }
   
