@@ -10,7 +10,8 @@ import {
     isRawData, 
     getContentType, 
     getSourceUrl,
-    getInteger
+    getInteger,
+    setInteger
   } from "@inrupt/solid-client";
   import { Session,handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
   import { VCARD } from "@inrupt/vocab-common-rdf";
@@ -30,6 +31,8 @@ import {
   const buttonLogin = document.getElementById("btnLogin");
   const writeForm = document.getElementById("writeForm");
   const readForm = document.getElementById("readForm");
+
+  const turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
 
   //new login function
   async function loginAndFetch() {
@@ -148,7 +151,43 @@ async function writeProfile() {
     "labelFN"
   ).textContent = `...click the 'Read Profile' button to to see what the name might be now...?!`;
 }
- 
+
+async function writeData(){
+  const name = document.getElementById("input_name").value;
+  // 1a. Start with an existing Thing (i.e., profile).
+  // Note: Login code has been omitted for brevity. See the Prerequisite section above.
+  // ...
+
+  const myDataset = await getSolidDataset( turtledatei, { fetch: fetch });
+  const profile = getThing( myDataset, turtledatei);;
+  // 1b. Modify the thing; 
+  // Note: solid-client functions do not modify objects passed in as arguments. 
+  // Instead the functions return new objects with the modifications.
+  // That is, setStringNoLocale and addStringNoLocale return a new Thing and
+  // - profile remains unchanged and 
+  // - updatedProfile is changed only because it is explicitly set to the object returned from addStringNoLocale.
+  const newInt = 1 + await newtest2(name);
+  let updatedProfile = setInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" +name, newInt);
+  //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
+  //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
+
+  // 2. Update SolidDataset with the updated Thing (i.e., updatedProfile). 
+  // Note:  solid-client functions do not modify objects passed in as arguments. 
+  // Instead the functions return new objects with the modifications.
+  // That is, setThing returns a new SolidDataset and
+  // - myDataset remains unchanged.
+  // - updatedProfile remains unchanged.
+
+  const myChangedDataset = setThing(myDataset, updatedProfile);
+  // 3. Save the new dataset.
+  // The fnuction returns a SolidDataset that reflects its state after the save.
+  const savedProfileResource = await saveSolidDatasetAt(
+    turtledatei,
+    myChangedDataset,
+    { fetch: fetch }
+  );
+}
+
 // 3. Read profile
 async function readProfile() {
   const webID = document.getElementById("webID").value;
@@ -222,7 +261,7 @@ async function readFileFromPod(fileURL) {
 
     console.log("test2");
     const myDataset = await getSolidDataset(
-      "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl",{ 
+      turtledatei,{ 
       fetch: fetch 
     });
     const profile = getThing(
@@ -256,12 +295,12 @@ async function newtest(){
   // 3. Make authenticated requests by passing `fetch` to the solid-client functions.
   // For example, the user must be someone with Read access to the specified URL.
   const myDataset = await getSolidDataset(
-    "https://alexh156.solidcommunity.net/Splitspense/mynewtest.ttl", {
+    turtledatei, {
     fetch: fetch
   });
   const profile = getThing(
     myDataset,
-    "https://alexh156.solidcommunity.net/Splitspense/mynewtest.ttl"
+    turtledatei
   );
   //console.log(profile.predicates["https://alexh156.solidcommunity.net/Splitspense/nils"].literals["http://www.w3.org/2001/XMLSchema#integer"][0]);
   const fn = getInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/nils");
@@ -269,18 +308,21 @@ async function newtest(){
   console.log(fn);
 }
 
-async function newtest2(){
+async function newtest2(name){
+  if (name == null){
+    name = document.getElementById("webID").value;
+  }
   const myDataset = await getSolidDataset(
-    "https://alexh156.solidcommunity.net/Splitspense/mynewtest.ttl", {
+    turtledatei, {
     fetch: fetch
   });
   const profile = getThing(
     myDataset,
-    "https://alexh156.solidcommunity.net/Splitspense/mynewtest.ttl"
+    turtledatei
   );
-  const fn = getInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" + document.getElementById("webID").value);
+  const fn = getInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" + name);
   document.getElementById("labelFN").textContent = fn;
-  console.log(document.getElementById("webID").value);
+  return fn;
 }
   
   buttonLogin.onclick = function () {
@@ -291,7 +333,8 @@ async function newtest2(){
  
   writeForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    writeProfile();
+    //writeProfile();
+    writeData();
   });
  
   readForm.addEventListener("submit", (event) => {
