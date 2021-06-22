@@ -1,106 +1,124 @@
 import {
-    getSolidDataset,
-    getThing,
-    getThingAll,
-    setThing,
-    getStringNoLocale,
-    setStringNoLocale,
-    saveSolidDatasetAt,
-    getFile,
-    isRawData, 
-    getContentType, 
-    getSourceUrl,
-    getInteger,
-    setInteger
-  } from "@inrupt/solid-client";
-  import { Session,handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
-  import { VCARD } from "@inrupt/vocab-common-rdf";
+  getSolidDataset,
+  getThing,
+  getThingAll,
+  setThing,
+  getStringNoLocale,
+  setStringNoLocale,
+  saveSolidDatasetAt,
+  getFile,
+  isRawData,
+  getContentType,
+  getSourceUrl,
+  getInteger,
+  setInteger
+} from "@inrupt/solid-client";
+import { Session, handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
+import { VCARD } from "@inrupt/vocab-common-rdf";
 
- 
-  // If your Pod is *not* on `solidcommunity.net`, change this to your identity provider.
-  const SOLID_IDENTITY_PROVIDER = "https://solidcommunity.net";
-  document.getElementById(
-    "solid_identity_provider"
-  ).innerHTML = `[<a target="_blank" href="${SOLID_IDENTITY_PROVIDER}">${SOLID_IDENTITY_PROVIDER}</a>]`;
- 
-  const NOT_ENTERED_WEBID =
-    "...not logged in yet - but enter any WebID to read from its profile...";
- 
-  const session = new Session(); //löschen?
- 
-  const buttonLogin = document.getElementById("btnLogin");
-  const writeForm = document.getElementById("writeForm");
-  const readForm = document.getElementById("readForm");
 
-  const turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+// // If your Pod is *not* on `solidcommunity.net`, change this to your identity provider.
+// const SOLID_IDENTITY_PROVIDER = "https://inrupt.net";
+// document.getElementById(
+//   "solid_identity_provider"
+// ).innerHTML = `[<a target="_blank" href="${SOLID_IDENTITY_PROVIDER}">${SOLID_IDENTITY_PROVIDER}</a>]`;
 
-  //new login function
-  async function loginAndFetch() {
-    // 1. Call the handleIncomingRedirect() function to complete the authentication process.
-    //   If the page is being loaded after the redirect from the Solid Identity Provider
-    //      (i.e., part of the authentication flow), the user's credentials are stored in-memory, and
-    //      the login process is complete. That is, a session is logged in 
-    //      only after it handles the incoming redirect from the Solid Identity Provider.
-    //   If the page is not being loaded after a redirect from the Solid Identity Provider, 
-    //      nothing happens.
-    await handleIncomingRedirect();
-  
-    // 2. Start the Login Process if not already logged in.
-    if (!getDefaultSession().info.isLoggedIn) {
-      // The `login()` redirects the user to their identity provider;
-      // i.e., moves the user away from the current page.
-      await login({
-        // Specify the URL of the user's Solid Identity Provider; e.g., "https://broker.pod.inrupt.com" or "https://inrupt.net"
-        //oidcIssuer: "https://broker.pod.inrupt.com",
-        oidcIssuer: "https://solidcommunity.net/",
-        // Specify the URL the Solid Identity Provider should redirect to after the user logs in,
-        // e.g., the current page for a single-page app.
-        redirectUrl: window.location.href,
-        // Pick an application name that will be shown when asked 
-        // to approve the application's access to the requested data.
-        clientName: "My application"
-      });
-    }
-    // TODO: Buggy, manchmal aktualisiert der nicht
-    var session = getDefaultSession();
-    if (session.info.isLoggedIn) {
-      // Update the page with the status.
-      document.getElementById(
-        "labelStatus"
-      ).innerHTML = `Your session is logged in with the WebID [<a target="_blank" href="${session.info.webId}">${session.info.webId}</a>].`;
-      document.getElementById("labelStatus").setAttribute("role", "alert");
-    }
+// const NOT_ENTERED_WEBID =
+//   "...not logged in yet - but enter any WebID to read from its profile...";
+
+//const session = new Session(); //löschen?
+
+const buttonLogin = document.getElementById("btnLogin");
+const writeForm = document.getElementById("writeForm");
+const readForm = document.getElementById("readForm");
+
+const turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+
+
+
+function loginToInruptDotNet(webIDProvider) {
+  return login({
+    oidcIssuer: webIDProvider,
+    redirectUrl: window.location.href,
+    clientName: "Getting started app"
+  });
+}
+
+async function handleRedirectAfterLogin() {
+  await handleIncomingRedirect();
+
+  const session = getDefaultSession();
+  if (session.info.isLoggedIn) {
+    // Update the page with the status.
+    document.getElementById("labelStatus").textContent = "Your Session is logged in";
+    document.getElementById("labelStatus").setAttribute("role", "alert");
   }
- 
-  // 1a. Start Login Process. Call session.login() function.
-  async function loginOld() {
-    if (!session.info.isLoggedIn) {
-      await session.login({
-        oidcIssuer: SOLID_IDENTITY_PROVIDER,
-        clientName: "Inrupt tutorial client app",
-        redirectUrl: window.location.href
-      });
-    }
-  }
- 
-  // 1b. Login Redirect. Call session.handleIncomingRedirect() function.
-  // When redirected after login, finish the process by retrieving session information.
-  async function handleRedirectAfterLogin() {
-    await session.handleIncomingRedirect(window.location.href);
-    if (session.info.isLoggedIn) {
-      // Update the page with the status.
-      document.getElementById(
-        "labelStatus"
-      ).innerHTML = `Your session is logged in with the WebID [<a target="_blank" href="${session.info.webId}">${session.info.webId}</a>].`;
-      document.getElementById("labelStatus").setAttribute("role", "alert");
-    }
-  }
- 
-  // The example has the login redirect back to the index.html.
-  // This calls the function to process login information.
-  // If the function is called when not part of the login redirect, the function is a no-op.
-//handleRedirectAfterLogin();
- 
+}
+handleRedirectAfterLogin();
+
+buttonLogin.onclick = function() {
+  const webIDProvider = document.getElementById("dropdownID").value;
+  console.log(webIDProvider);
+  loginToInruptDotNet(webIDProvider);
+};
+
+
+// // OldLogin Function
+// async function loginAndFetch() {
+//   // 1. Call the handleIncomingRedirect() function to complete the authentication process.
+//   //   If the page is being loaded after the redirect from the Solid Identity Provider
+//   //      (i.e., part of the authentication flow), the user's credentials are stored in-memory, and
+//   //      the login process is complete. That is, a session is logged in 
+//   //      only after it handles the incoming redirect from the Solid Identity Provider.
+//   //   If the page is not being loaded after a redirect from the Solid Identity Provider, 
+//   //      nothing happens.
+//   await handleIncomingRedirect();
+
+//   // 2. Start the Login Process if not already logged in.
+//   if (!getDefaultSession().info.isLoggedIn) {
+//     // The `login()` redirects the user to their identity provider;
+//     // i.e., moves the user away from the current page.
+//     await login({
+//       // Specify the URL of the user's Solid Identity Provider; e.g., "https://broker.pod.inrupt.com" or "https://inrupt.net"
+//       //oidcIssuer: "https://broker.pod.inrupt.com",
+//       oidcIssuer: "https://inrupt.net",
+//       // Specify the URL the Solid Identity Provider should redirect to after the user logs in,
+//       // e.g., the current page for a single-page app.
+//       redirectUrl: window.location.href,
+//       // Pick an application name that will be shown when asked 
+//       // to approve the application's access to the requested data.
+//       clientName: "My application"
+//     });
+//   }
+//   // TODO: Buggy, manchmal aktualisiert der nicht
+//   var session = getDefaultSession();
+//   if (session.info.isLoggedIn) {
+//     // Update the page with the status.
+//     document.getElementById(
+//       "labelStatus"
+//     ).innerHTML = `Your session is logged in with the WebID [<a target="_blank" href="${session.info.webId}">${session.info.webId}</a>].`;
+//     document.getElementById("labelStatus").setAttribute("role", "alert");
+//   }
+// }
+// buttonLogin.onclick = function () {
+//   //login();
+//   loginAndFetch();
+//   //newtest();
+// };
+
+// 1a. Start Login Process. Call session.login() function.
+// async function loginOld() {
+//   if (!session.info.isLoggedIn) {
+//     await session.login({
+//       oidcIssuer: SOLID_IDENTITY_PROVIDER,
+//       clientName: "Inrupt tutorial client app",
+//       redirectUrl: window.location.href
+//     });
+//   }
+// }
+
+
+
 // 2. Write to profile
 async function writeProfile() {
   const name = document.getElementById("input_name").value;
@@ -152,15 +170,15 @@ async function writeProfile() {
   ).textContent = `...click the 'Read Profile' button to to see what the name might be now...?!`;
 }
 
-async function writeData(){
+async function writeData() {
   const name = document.getElementById("input_name").value;
   const value = document.getElementById("input_value").valueAsNumber;
   // 1a. Start with an existing Thing (i.e., profile).
   // Note: Login code has been omitted for brevity. See the Prerequisite section above.
   // ...
 
-  const myDataset = await getSolidDataset( turtledatei, { fetch: fetch });
-  const profile = getThing( myDataset, turtledatei);;
+  const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
+  const profile = getThing(myDataset, turtledatei);;
   // 1b. Modify the thing; 
   // Note: solid-client functions do not modify objects passed in as arguments. 
   // Instead the functions return new objects with the modifications.
@@ -168,7 +186,7 @@ async function writeData(){
   // - profile remains unchanged and 
   // - updatedProfile is changed only because it is explicitly set to the object returned from addStringNoLocale.
   const newInt = value + await newtest2(name);
-  let updatedProfile = setInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" +name, newInt);
+  let updatedProfile = setInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" + name, newInt);
   //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
   //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
 
@@ -188,6 +206,8 @@ async function writeData(){
     { fetch: fetch }
   );
 }
+
+
 
 // 3. Read profile
 async function readProfile() {
@@ -240,14 +260,14 @@ async function readProfile() {
   // Update the page with the retrieved values.
   document.getElementById("labelFN").textContent = `[${formattedName}]`;
 }
-  
-  // Read file from Pod 
+
+// Read file from Pod 
 async function readFileFromPod(fileURL) {
   try {
     // file is a Blob (see https://developer.mozilla.org/docs/Web/API/Blob)
     //const file = await getFile(
     //  fileURL,               // File in Pod to Read
-              // fetch from authenticated session
+    // fetch from authenticated session
     //);
 
     //console.log( `Fetched a ${getContentType(file)} file from ${getSourceUrl(file)}.`);
@@ -262,8 +282,8 @@ async function readFileFromPod(fileURL) {
 
     console.log("test2");
     const myDataset = await getSolidDataset(
-      turtledatei,{ 
-      fetch: fetch 
+      turtledatei, {
+      fetch: fetch
     });
     const profile = getThing(
       myDataset,
@@ -274,11 +294,11 @@ async function readFileFromPod(fileURL) {
     //const fn = getStringNoLocale(file, "http://creativecommons.org/ns#attributionName");
     //console.log(fn)
 
-    } catch (err) {
+  } catch (err) {
     console.log(err);
   }
 }
-async function newtest(){
+async function newtest() {
   // 1. Call the handleIncomingRedirect() function,
   //    - Which completes the login flow if redirected back to this page as part of login; or
   //    - Which is a No-op if not part of login.
@@ -309,9 +329,9 @@ async function newtest(){
   console.log(fn);
 }
 
-async function newtest2(name){
+async function newtest2(name) {
   var machprint = false;
-  if (name == null){
+  if (name == null) {
     name = document.getElementById("webID").value;
     machprint = true;
   }
@@ -324,28 +344,23 @@ async function newtest2(name){
     turtledatei
   );
   const fn = getInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" + name);
-  if (machprint){
-      document.getElementById("labelFN").textContent = fn;
+  if (machprint) {
+    document.getElementById("labelFN").textContent = fn;
   }
   return fn;
 }
-  
-  buttonLogin.onclick = function () {
-    //login();
-    loginAndFetch();
-    //newtest();
-  };
- 
-  writeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    //writeProfile();
-    writeData();
-  });
- 
-  readForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    //readProfile();
-    //readFileFromPod(document.getElementById("labelFN"));
-    newtest2();
-  });
 
+
+
+writeForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  //writeProfile();
+  writeData();
+});
+
+readForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  //readProfile();
+  //readFileFromPod(document.getElementById("labelFN"));
+  newtest2();
+});

@@ -1,62 +1,81 @@
+<!DOCTYPE html>
+<html>
 
-    
- <!DOCTYPE html>
- <html>
-   <head>
-     <meta charset="utf-8">
-     <title>Getting Started: Inrupt JavaScript Client Libraries</title>
-     <script defer="" src="/mysolidapp.e31bb0bc.js"></script>
-     <link rel="stylesheet" href="/my-demo.4eccdcf0.css">
-   <script src="/my-demo.4eccdcf0.js"></script></head>
+<head>
+  <meta charset="utf-8">
+  <title>Getting Started: Inrupt JavaScript Client Libraries</title>
+  <script defer="" src="/index.fd532818.js"></script>
+  <link rel="stylesheet" href="/index.0c8e7f54.css">
+</head>
 
-   <body>
-     <header>
-       <h2>Getting Started</h2>
-       <h3>with Inrupt JavaScript Client Libraries</h3>
-     </header>
-     <section id="login" class="panel">
-       <div class="row">
-         <label id="labelLogin" for="btnLogin">1. Click the button to log into
-           <span id="solid_identity_provider">...provided by the JavaScript code...</span>:
-         </label>
-         <button name="btnLogin" id="btnLogin">Login</button>
-         <p id="labelStatus" class="labelStatus"></p>
-       </div>
-     </section>
+<body>
+  <header>
+    <h2>Getting Started</h2>
+    <h3>with Inrupt JavaScript Client Libraries</h3>
+  </header>
+  
+  <section id="login" class="panel">
+    <div class="row">
+    <p>
+      <label id="labelLogin" for="btnLogin">1. Select or Enter a Pod-Provider</label>
+      <input type="text" name="city" list="webID-Provider" id="dropdownID" value="https://">
+      <datalist id="webID-Provider">
+        <option value="https://inrupt.net">
+        </option><option value="https://solidcommunity.net/">
+      </option></datalist>
+      <br>
+      <br><label id="labelLogin" for="btnLogin">2. Click the button to log in:</label>
+      <button name="btnLogin" id="btnLogin">Login</button>
+    </p>
+    <p id="labelStatus" class="labelStatus"></p>
+  </div>
+  </section>
 
-     <div id="read" class="panel">
-       <div class="row">
-         <form id="writeForm">
-           <label id="writelabel" for="name">2. Write name and value: </label>
-           <input type="text" id="input_name" name="name" size="25" placeholder="name">
-           <input type="number" id="input_value" name="input_value" size="5" placeholder="0">
-           <button type="submit">
-             Write to Profile
-           </button>       
-         </form>
-       </div>
+  
+  <!-- <section id="login" class="panel">
+    <div class="row">
+      <label id="labelLogin" for="btnLogin">1. Click the button to log into
+        <span id="solid_identity_provider">...provided by the JavaScript code...</span>:
+      </label>
+      <button name="btnLogin" id="btnLogin">Login</button>
+      <p id="labelStatus" class="labelStatus"></p>
+    </div>
+  </section> -->
 
-       <dl class="display">
-         <dt>Writing status:&nbsp</dt>
-         <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
-       </dl>
-     </div>
+  <div id="read" class="panel">
+    <div class="row">
+      <form id="writeForm">
+        <label id="writelabel" for="name">2. Write name and value: </label>
+        <input type="text" id="input_name" name="name" size="25" placeholder="name">
+        <input type="number" id="input_value" name="input_value" size="5" placeholder="0">
+        <button type="submit">
+          Write to Profile
+        </button>
+      </form>
+    </div>
 
-     <div id="read" class="panel">
-       <div class="row">
-         <form id="readForm">
-           <label id="readlabel" for="webID">3. Check Account balance from person:
-           </label>
-           <input type="text" id="webID" name="webID" size="50" placeholder="Insert name to check balance">
-           <button type="submit" name="btnRead" id="btnRead">
-             Read Profile
-           </button>
-         </form>
-       </div>
-       <dl class="display">
-         <dt>Schulden:&nbsp</dt>
-         <dd id="labelFN">...not read yet...</dd>
-       </dl>
-     </div>
-   </body>
- </html>
+    <dl class="display">
+      <dt>Writing status:&nbsp</dt>
+      <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
+    </dl>
+  </div>
+
+  <div id="read" class="panel">
+    <div class="row">
+      <form id="readForm">
+        <label id="readlabel" for="webID">3. Check Account balance from person:
+        </label>
+        <input type="text" id="webID" name="webID" size="50" placeholder="Insert name to check balance">
+        <button type="submit" name="btnRead" id="btnRead">
+          Read Profile
+        </button>
+      </form>
+    </div>
+    <dl class="display">
+      <dt>Schulden:&nbsp</dt>
+      <dd id="labelFN">...not read yet...</dd>
+    </dl>
+  </div>
+</body>
+
+</html>
