@@ -11,7 +11,9 @@ import {
     getContentType, 
     getSourceUrl,
     getInteger,
-    setInteger
+    setInteger,
+    getDecimal,
+    setDecimal
   } from "@inrupt/solid-client";
   import { Session,handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
   import { VCARD } from "@inrupt/vocab-common-rdf";
@@ -33,6 +35,7 @@ import {
   const readForm = document.getElementById("readForm");
 
   const turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+  var webID = null;
 
   //new login function
   async function loginAndFetch() {
@@ -64,11 +67,18 @@ import {
     // TODO: Buggy, manchmal aktualisiert der nicht
     var session = getDefaultSession();
     if (session.info.isLoggedIn) {
+      webID = session.info.webId.replace("https://","").replace("http://","").split(".")[0];
       // Update the page with the status.
       document.getElementById(
         "labelStatus"
       ).innerHTML = `Your session is logged in with the WebID [<a target="_blank" href="${session.info.webId}">${session.info.webId}</a>].`;
       document.getElementById("labelStatus").setAttribute("role", "alert");
+      const myDataset = await getSolidDataset( turtledatei, { fetch: fetch });
+      const profile = getThing( myDataset, turtledatei);;
+      const allmembers = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/members");
+      document.getElementById("group_value").value = allmembers;
+      const groupinformation = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/information");
+      document.getElementById("groupinformation").innerHTML = "Group description: "+groupinformation;
     }
   }
  
@@ -153,7 +163,6 @@ async function writeProfile() {
 }
 
 async function writeData(){
-  const name = document.getElementById("input_name").value;
   const value = document.getElementById("input_value").valueAsNumber;
   // 1a. Start with an existing Thing (i.e., profile).
   // Note: Login code has been omitted for brevity. See the Prerequisite section above.
@@ -167,26 +176,39 @@ async function writeData(){
   // That is, setStringNoLocale and addStringNoLocale return a new Thing and
   // - profile remains unchanged and 
   // - updatedProfile is changed only because it is explicitly set to the object returned from addStringNoLocale.
-  const newInt = value + await newtest2(name);
-  let updatedProfile = setInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" +name, newInt);
-  //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
-  //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
+  const tt = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/members");
+  const members = tt.split(",");
+  const membercount = members.length;
+  const admin = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/admin");
+  for (var i in members){
+    var newInt = 0.0;
+    if (members[i] == webID){
+      newInt = -value/membercount*(membercount-1) + await getBalance(members[i]);
+    }
+    else{
+      newInt = value/membercount + await getBalance(members[i]);
+    }
+    
+    let updatedProfile = setDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" +members[i], newInt);
+    //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
+    //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
 
-  // 2. Update SolidDataset with the updated Thing (i.e., updatedProfile). 
-  // Note:  solid-client functions do not modify objects passed in as arguments. 
-  // Instead the functions return new objects with the modifications.
-  // That is, setThing returns a new SolidDataset and
-  // - myDataset remains unchanged.
-  // - updatedProfile remains unchanged.
+    // 2. Update SolidDataset with the updated Thing (i.e., updatedProfile). 
+    // Note:  solid-client functions do not modify objects passed in as arguments. 
+    // Instead the functions return new objects with the modifications.
+    // That is, setThing returns a new SolidDataset and
+    // - myDataset remains unchanged.
+    // - updatedProfile remains unchanged.
 
-  const myChangedDataset = setThing(myDataset, updatedProfile);
-  // 3. Save the new dataset.
-  // The fnuction returns a SolidDataset that reflects its state after the save.
-  const savedProfileResource = await saveSolidDatasetAt(
-    turtledatei,
-    myChangedDataset,
-    { fetch: fetch }
-  );
+    const myChangedDataset = setThing(myDataset, updatedProfile);
+    // 3. Save the new dataset.
+    // The fnuction returns a SolidDataset that reflects its state after the save.
+    const savedProfileResource = await saveSolidDatasetAt(
+      turtledatei,
+      myChangedDataset,
+      { fetch: fetch }
+    );
+  }
 }
 
 // 3. Read profile
@@ -309,12 +331,7 @@ async function newtest(){
   console.log(fn);
 }
 
-async function newtest2(name){
-  var machprint = false;
-  if (name == null){
-    name = document.getElementById("webID").value;
-    machprint = true;
-  }
+async function getBalance(name){
   const myDataset = await getSolidDataset(
     turtledatei, {
     fetch: fetch
@@ -323,11 +340,44 @@ async function newtest2(name){
     myDataset,
     turtledatei
   );
-  const fn = getInteger(profile, "https://alexh156.solidcommunity.net/Splitspense/" + name);
-  if (machprint){
-      document.getElementById("labelFN").textContent = fn;
-  }
+  const fn = getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + name);
   return fn;
+}
+
+async function getAllBalances(){
+  //console.log(webID);
+  const myDataset = await getSolidDataset(
+    turtledatei, {
+    fetch: fetch
+  });
+  const profile = getThing(
+    myDataset,
+    turtledatei
+  );
+  const tt = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "members");
+  const members = tt.split(",");
+  var output = "";
+  members.forEach(member => output+=member.toString()+": "+ getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + member) + "\n");
+  document.getElementById("labelFN").textContent = output;
+}
+
+async function updateGroup(){
+  const myDataset = await getSolidDataset(
+    turtledatei, {
+    fetch: fetch
+  });
+  const profile = getThing(
+    myDataset,
+    turtledatei
+  );
+  
+  let updatedProfile = setStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/members", document.getElementById("group_value").value);
+  const myChangedDataset = setThing(myDataset, updatedProfile);
+  const savedProfileResource = await saveSolidDatasetAt(
+    turtledatei,
+    myChangedDataset,
+    { fetch: fetch }
+  );
 }
   
   buttonLogin.onclick = function () {
@@ -346,6 +396,13 @@ async function newtest2(name){
     event.preventDefault();
     //readProfile();
     //readFileFromPod(document.getElementById("labelFN"));
-    newtest2();
+    getAllBalances();
+  });
+
+  groupForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    //readProfile();
+    //readFileFromPod(document.getElementById("labelFN"));
+    updateGroup();
   });
 
