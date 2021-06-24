@@ -13,7 +13,8 @@ import {
   getInteger,
   setInteger,
   getDecimal,
-  setDecimal
+  setDecimal,
+  getPublicAccess
 } from "@inrupt/solid-client";
 import { Session,handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
 import { VCARD } from "@inrupt/vocab-common-rdf";
@@ -26,6 +27,7 @@ const session = new Session();
 
 
 const turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+
 
 function loginToWebProvider(webIDProvider) {
   login({
@@ -40,9 +42,6 @@ buttonLogin.onclick = function() {
   loginToWebProvider(webIDProvider);
 };
 
-infoButton.onclick = function() {
-  console.log(webID + ":WebID")
-}
 async function handleRedirectAfterLogin() {
   await handleIncomingRedirect();
 
@@ -289,6 +288,26 @@ groupForm.addEventListener("submit", (event) => {
   updateGroup();
 });
 
+infoButton.onclick = function() {
+  console.log(webID + ":WebID");
+  getPublicAccess();
+}
+
+
+// getPublicAccess("https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl",   // Resource
+//   { fetch: fetch }                  // fetch function from authenticated session
+// ).then(access => {
+//   if (access === null) {
+//     console.log("Could not load access details for this Resource.");
+//   } else {
+//     console.log("Returned Access:: ", JSON.stringify(access));
+//     console.log("Everyone", (access.read ? 'CAN' : 'CANNOT'), "read the Resource.");
+//     console.log("Everyone", (access.append ? 'CAN' : 'CANNOT'), "add data to the Resource.");
+//     console.log("Everyone", (access.write ? 'CAN' : 'CANNOT'), "change data in the Resource.");
+//     console.log("Everyone", (access.controlRead ? 'CAN' : 'CANNOT'), "see access to the Resource.");
+//     console.log("Everyone", (access.controlWrite ? 'CAN' : 'CANNOT'), "change access to the Resource.");
+//   }
+// });
 
 // // 1a. Start Login Process. Call session.login() function.
 // async function loginOld() {
