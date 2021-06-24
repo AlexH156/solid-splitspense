@@ -28,7 +28,7 @@ module.exports = {
       ],
   },
   devServer: {
-    contentBase: "mysolidapp",
+    contentBase: "./",
   },
   resolve: {
       fallback: { 
