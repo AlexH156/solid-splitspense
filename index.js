@@ -187,7 +187,7 @@ async function getAllBalances() {
     var output = "";
     const mm = getStringNoLocale(profile, fileLocation.members);
     const members = mm.split(",");
-    members.forEach(member => output += member.toString() + ": " + getDecimal(profile, fileLocation.base + member) + "\n");
+    members.forEach(member => output += member.toString() + ": " + getDecimal(profile, fileLocation.base + "/" + member) + "\n");
     const hh = getStringNoLocale(profile, fileLocation.history);
     const history = hh.split(";");
     output += "\nHistory: \n"
