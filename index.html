@@ -3,15 +3,15 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Getting Started: Inrupt JavaScript Client Libraries</title>
+  <title>Splitspense</title>
   <script defer src="./index.js"></script>
   <link rel="stylesheet" href="my-demo.css" />
 </head>
 
 <body>
   <header>
-    <h2>Getting Started</h2>
-    <h3>with Inrupt JavaScript Client Libraries</h3>
+    <h2>Splitspense</h2>
+    <h3>Track and split your expenses across a group</h3>
   </header>
   <section id="login" class="panel">
     <div class="row">
@@ -30,7 +30,7 @@
   </section>
   <section>
     <div id="groupselector" class="panel">
-      Provide Splitspense Folder Location
+      2. Provide Splitspense Folder Location
       <input type="text" id="folderLink" name="folderLink" size="30" value = "https://alexh156.solidcommunity.net/Splitspense">
       <button name="btnLinkSubmit" id="btnLinkSubmit">Submit</button>
     </div>
@@ -40,12 +40,11 @@
     <div id="read" class="panel">
     <div class="row">
       <form id="writeForm">
-        <label id="writelabel" for="name">2. Write value and comment: </label>
+        <label id="writelabel" for="name">3. Write how much you paid, what is was and for whom (default is all): </label>
         <input
           type="number"
           id="input_value"
           name="input_value"
-          size="2"
           placeholder="0"
           step=0.01
         />
@@ -53,10 +52,12 @@
           type="text"
           id="input_comment"
           name="input_comment"
-          size="20"
+          size="30"
+          placeholder="comment"
         />
+        <input type="text" id="input_members" name="input_members" size="50" placeholder="members"/>
         <button type="submit">
-          Write to Profile
+          Insert expense
         </button>       
       </form>
     </div>
@@ -65,7 +66,7 @@
     <div id="group" class="panel">
       <div class="row">
         <form id="groupForm">
-          <label id="writelabel" for="name">Get members and add one </label>
+          <label id="writelabel" for="name">(optional) Add member to your group</label>
           <input type="text" id="group_value" name="group_value" size="50" />
           <button type="submit">
             Update Group
@@ -83,7 +84,7 @@
     <div id="read" class="panel">
       <div class="row">
         <form id="readForm">
-          <label id="readlabel" for="webID">3. Check Account balance from person:
+          <label id="readlabel" for="webID">4. Check Account balance from person:
           </label>
           <button type="submit" name="btnRead" id="btnRead">
             Get Balances
