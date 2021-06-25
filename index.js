@@ -187,6 +187,7 @@ async function writeData(){
       myChangedDataset,
       { fetch: fetch }
     );
+  }
 }
 
 // 3. Read profile
@@ -264,7 +265,6 @@ async function getAllBalances() {
     alert("You are not logged in. To continue please login.");
   }
   else {
-    //console.log(webID);
     const myDataset = await getSolidDataset(
       turtledatei, {
       fetch: fetch
@@ -273,10 +273,15 @@ async function getAllBalances() {
       myDataset,
       turtledatei
     );
-    const tt = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "members");
-    const members = tt.split(",");
     var output = "";
-    members.forEach(member => output += member.toString() + ": " + getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + member) + "\n");
+    const mm = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "members");
+    const members = mm.split(",");
+    members.forEach(member => output+=member.toString()+": "+ getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + member) + "\n");
+    const hh = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
+    const history = hh.split(";");
+    output += "\nHistory: \n"
+    history.forEach(his => output+=his.toString() + "\n");
+  
     document.getElementById("labelFN").textContent = output;
   }
 }
@@ -303,29 +308,6 @@ async function updateGroup() {
       { fetch: fetch }
     );
   }
-}
-
-
-async function getAllBalances(){
-  //console.log(webID);
-  const myDataset = await getSolidDataset(
-    turtledatei, {
-    fetch: fetch
-  });
-  const profile = getThing(
-    myDataset,
-    turtledatei
-  );
-  var output = "";
-  const mm = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "members");
-  const members = mm.split(",");
-  members.forEach(member => output+=member.toString()+": "+ getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + member) + "\n");
-  const hh = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
-  const history = hh.split(";");
-  output += "\nHistory: \n"
-  history.forEach(his => output+=his.toString() + "\n");
-
-  document.getElementById("labelFN").textContent = output;
 }
 
 

@@ -21,7 +21,7 @@
   "homepage": "https://github.com/AlexH156/mysolidapp#readme",
   "dependencies": {
     "@inrupt/solid-client": "^1.9.0",
-    "@inrupt/solid-client-authn-browser": "^1.9.0",
+    "@inrupt/solid-client-authn-browser": "^1.9.1",
     "@inrupt/vocab-common-rdf": "^0.7.4",
     "@types/solid-auth-client": "2.3.1",
     "crypto-browserify": "^3.12.0",
