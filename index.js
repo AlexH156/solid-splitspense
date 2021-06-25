@@ -179,7 +179,7 @@ async function writeData(){
   const tt = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/members");
   const members = tt.split(",");
   const membercount = members.length;
-  const admin = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/admin");
+  //const admin = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/admin");
   for (var i in members){
     var newInt = 0.0;
     if (members[i] == webID){
@@ -209,6 +209,19 @@ async function writeData(){
       { fetch: fetch }
     );
   }
+  //update history
+  var today = new Date().toLocaleDateString();
+  const oldhistory = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
+  const newhistory = webID.toString() + " paid " + document.getElementById("input_value").value + "€ for " + document.getElementById("input_comment").value + " on " + today + ";" + oldhistory;
+  
+  let updatedProfile = setStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/history", newhistory);
+  const myChangedDataset = setThing(myDataset, updatedProfile);
+  const savedProfileResource = await saveSolidDatasetAt(
+    turtledatei,
+    myChangedDataset,
+    { fetch: fetch }
+  );
+
 }
 
 // 3. Read profile
@@ -354,10 +367,15 @@ async function getAllBalances(){
     myDataset,
     turtledatei
   );
-  const tt = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "members");
-  const members = tt.split(",");
   var output = "";
+  const mm = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "members");
+  const members = mm.split(",");
   members.forEach(member => output+=member.toString()+": "+ getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + member) + "\n");
+  const hh = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
+  const history = hh.split(";");
+  output += "\nHistory: \n"
+  history.forEach(his => output+=his.toString() + "\n");
+
   document.getElementById("labelFN").textContent = output;
 }
 
