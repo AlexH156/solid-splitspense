@@ -62,13 +62,14 @@ async function handleRedirectAfterLogin() {
     webID = session.info.webId.replace("https://", "").replace("http://", "").split(".")[0];
     document.getElementById(
       "labelStatus"
-    ).innerHTML = `Your session is logged in with the WebID [<a target="_blank" href="${session.info.webId}">${session.info.webId}</a>].`;
+    //).innerHTML = `Your session is logged in with the WebID [<a target="_blank" href="${session.info.webId}">${session.info.webId}</a>].`;
+    ).innerHTML = "Welcome " + webID + " to Splitspense. Your are logged in.";
     document.getElementById("labelStatus").setAttribute("role", "alert");
 
-    document.getElementById("group_value").value = allmembers;
-    document.getElementById("input_members").value = allmembers;
-    document.getElementById("groupinformation").innerHTML = "Group description: " + groupinformation;
-    console.log("webid gepseichert");
+    // document.getElementById("group_value").value = allmembers;
+    // document.getElementById("input_members").value = allmembers;
+    // document.getElementById("groupinformation").innerHTML = "Group description: " + groupinformation;
+    // console.log("webid gepseichert");
   }
 }
 handleRedirectAfterLogin();
@@ -112,7 +113,7 @@ async function writeData() {
         }
         //update history
         var today = new Date().toLocaleDateString();
-        const oldhistory = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
+        const oldhistory = getStringNoLocale(profile, fileLocation.history);
         const newhistory = webID.toString() + " paid " + document.getElementById("input_value").value + "€ for " + document.getElementById("input_comment").value + " on " + today + " for the members: " + document.getElementById("input_members").value + ";" + oldhistory;
 
         let updatedProfile = setDecimal(profile, fileLocation.base + "/" + members[i], newInt);
@@ -237,9 +238,6 @@ async function folderSubmitfunc() {
     turtledatei = fileLocation.base + "/splitspense.ttl"; //turtledatei muss immer gleich heißen
 
     console.log(fileLocation);
-
-
-
 
     const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
     const profile = getThing(myDataset, turtledatei);
