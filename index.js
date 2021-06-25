@@ -24,8 +24,10 @@ const buttonLogin = document.getElementById("btnLogin");
 const writeForm = document.getElementById("writeForm");
 const readForm = document.getElementById("readForm");
 const infoButton = document.getElementById("infoButton");
+const folderSubmit = document.getElementById("btnLinkSubmit");
 var session; // = new Session();
 var webID = "";
+var folderLocation = "";
 
 const turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
 
@@ -313,6 +315,16 @@ groupForm.addEventListener("submit", (event) => {
   //readFileFromPod(document.getElementById("labelFN"));
   updateGroup();
 });
+
+async function folderSubmitfunc() {
+  folderLocation = document.getElementById("folderLink").value;
+  console.log(folderLocation);
+  }
+
+folderSubmit.onclick = function () {
+  folderSubmitfunc();
+  console.log(folderLocation);
+}
 
 infoButton.onclick = function () {
   console.log(webID + ":WebID");
