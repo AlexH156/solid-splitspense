@@ -1,5 +1,5 @@
 const path = require("path");
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
+//const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 module.exports = {
   
@@ -36,7 +36,7 @@ module.exports = {
          crypto: require.resolve("crypto-browserify")
       }
   },
-  plugins: [
-    new NodePolyfillPlugin()
-]
+//   plugins: [
+//     new NodePolyfillPlugin()
+// ]
 };
