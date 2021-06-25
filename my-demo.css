@@ -46,3 +46,6 @@
  dd {
    font-weight: bold;
  }
+ input[type='number']{
+  width: 40px;
+} 

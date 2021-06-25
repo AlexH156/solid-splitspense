@@ -63,6 +63,7 @@ async function handleRedirectAfterLogin() {
     const groupinformation = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/information");
 
     document.getElementById("group_value").value = allmembers;
+    document.getElementById("input_members").value = allmembers;
     document.getElementById("groupinformation").innerHTML = "Group description: " + groupinformation;
     console.log("webid gepseichert");
   }
@@ -145,51 +146,57 @@ async function writeData() {
     // That is, setStringNoLocale and addStringNoLocale return a new Thing and
     // - profile remains unchanged and 
     // - updatedProfile is changed only because it is explicitly set to the object returned from addStringNoLocale.
-    const tt = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/members");
-    const members = tt.split(",");
-    const membercount = members.length;
-    //const admin = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/admin");
-    for (var i in members) {
-      var newInt = 0.0;
-      if (members[i] == webID) {
-        newInt = -value / membercount * (membercount - 1) + await getBalance(members[i]);
+    //const tt = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/members");
+    if (document.getElementById("input_members") == null){
+      alert("No members could be found.");
+    }
+    else{
+      const tt = document.getElementById("input_members").value;
+      const members = tt.split(",");
+      const membercount = members.length;
+      //const admin = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/admin");
+      for (var i in members) {
+        var newInt = 0.0;
+        if (members[i] == webID) {
+          newInt = -value / membercount * (membercount - 1) + await getBalance(members[i]);
+        }
+        else {
+          newInt = value / membercount + await getBalance(members[i]);
+        }
+
+        let updatedProfile = setDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + members[i], newInt);
+        //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
+        //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
+
+        // 2. Update SolidDataset with the updated Thing (i.e., updatedProfile). 
+        // Note:  solid-client functions do not modify objects passed in as arguments. 
+        // Instead the functions return new objects with the modifications.
+        // That is, setThing returns a new SolidDataset and
+        // - myDataset remains unchanged.
+        // - updatedProfile remains unchanged.
+
+        const myChangedDataset = setThing(myDataset, updatedProfile);
+        // 3. Save the new dataset.
+        // The fnuction returns a SolidDataset that reflects its state after the save.
+        const savedProfileResource = await saveSolidDatasetAt(
+          turtledatei,
+          myChangedDataset,
+          { fetch: fetch }
+        );
       }
-      else {
-        newInt = value / membercount + await getBalance(members[i]);
-      }
+      //update history
+      var today = new Date().toLocaleDateString();
+      const oldhistory = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
+      const newhistory = webID.toString() + " paid " + document.getElementById("input_value").value + "€ for " + document.getElementById("input_comment").value + " on " + today + " for the members: " + document.getElementById("input_members").value + ";" + oldhistory;
 
-      let updatedProfile = setDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + members[i], newInt);
-      //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
-      //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
-
-      // 2. Update SolidDataset with the updated Thing (i.e., updatedProfile). 
-      // Note:  solid-client functions do not modify objects passed in as arguments. 
-      // Instead the functions return new objects with the modifications.
-      // That is, setThing returns a new SolidDataset and
-      // - myDataset remains unchanged.
-      // - updatedProfile remains unchanged.
-
+      let updatedProfile = setStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/history", newhistory);
       const myChangedDataset = setThing(myDataset, updatedProfile);
-      // 3. Save the new dataset.
-      // The fnuction returns a SolidDataset that reflects its state after the save.
       const savedProfileResource = await saveSolidDatasetAt(
         turtledatei,
         myChangedDataset,
         { fetch: fetch }
       );
     }
-    //update history
-    var today = new Date().toLocaleDateString();
-    const oldhistory = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
-    const newhistory = webID.toString() + " paid " + document.getElementById("input_value").value + "€ for " + document.getElementById("input_comment").value + " on " + today + ";" + oldhistory;
-
-    let updatedProfile = setStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/history", newhistory);
-    const myChangedDataset = setThing(myDataset, updatedProfile);
-    const savedProfileResource = await saveSolidDatasetAt(
-      turtledatei,
-      myChangedDataset,
-      { fetch: fetch }
-    );
   }
 }
 
