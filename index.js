@@ -268,7 +268,6 @@ async function getAllBalances() {
     alert("You are not logged in. To continue please login.");
   }
   else {
-    //console.log(webID);
     const myDataset = await getSolidDataset(
       turtledatei, {
       fetch: fetch
@@ -280,12 +279,12 @@ async function getAllBalances() {
     var output = "";
     const mm = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "members");
     const members = mm.split(",");
-    members.forEach(member => output += member.toString() + ": " + getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + member) + "\n");
+    members.forEach(member => output+=member.toString()+": "+ getDecimal(profile, "https://alexh156.solidcommunity.net/Splitspense/" + member) + "\n");
     const hh = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/" + "history");
     const history = hh.split(";");
     output += "\nHistory: \n"
-    history.forEach(his => output += his.toString() + "\n");
-
+    history.forEach(his => output+=his.toString() + "\n");
+  
     document.getElementById("labelFN").textContent = output;
   }
 }
