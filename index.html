@@ -1,32 +1,41 @@
+<!DOCTYPE html>
+<html>
 
-    
- <!DOCTYPE html>
- <html>
-   <head>
-     <meta charset="utf-8" />
-     <title>Getting Started: Inrupt JavaScript Client Libraries</title>
-     <script defer src="./index.js"></script>
-     <link rel="stylesheet" href="my-demo.css" />
-   </head>
+<head>
+  <meta charset="utf-8" />
+  <title>Getting Started: Inrupt JavaScript Client Libraries</title>
+  <script defer src="./index.js"></script>
+  <link rel="stylesheet" href="my-demo.css" />
+</head>
 
-   <body>
-     <header>
-       <h2>Getting Started</h2>
-       <h3>with Inrupt JavaScript Client Libraries</h3>
-     </header>
-     <section id="login" class="panel">
-       <div class="row">
-         <label id="labelLogin" for="btnLogin"
-           >1. Click the button to log into
-           <span id="solid_identity_provider"
-             >...provided by the JavaScript code...</span
-           >:
-         </label>
-         <button name="btnLogin" id="btnLogin">Login</button>
-         <p id="labelStatus" class="labelStatus"></p>
-         <p id="groupinformation" class="labelStatus"></p>
-       </div>
-     </section>
+<body>
+  <header>
+    <h2>Getting Started</h2>
+    <h3>with Inrupt JavaScript Client Libraries</h3>
+  </header>
+  <section id="login" class="panel">
+    <div class="row">
+      <p>
+        <label id="labelLogin" for="btnLogin">1. Select or Enter a Pod-Provider</label>
+        <input type="text" name="city" list="webID-Provider" id="dropdownID" value="https://">
+        <datalist id="webID-Provider">
+          <option value="https://inrupt.net">
+          <option value="https://solidcommunity.net/">
+        </datalist>
+        <button name="btnLogin" id="btnLogin">Login</button>
+      <label id="labelLogin" for="btnLogin"></label>
+      <p id="labelStatus" class="labelStatus"></p>
+      <p id="groupinformation" class="labelStatus">  </p>
+    </div>
+  </section>
+  <section>
+    <div id="groupselector" class="panel">
+      Provide Splitspense Folder Location
+      <input type="text" id="folderLink" name="folderLink" size="30">
+      <button name="btnLinkSubmit" id="btnLinkSubmit">Submit</button>
+    </div>
+  </section>
+
 
      <div id="read" class="panel">
       <div class="row">
@@ -52,49 +61,60 @@
         </form>
       </div>
 
-      <dl class="display">
-        <dt>Writing status:&nbsp</dt>
-        <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
-      </dl>
+
+  </section>
+
+  <div id="read" class="panel">
+    <div class="row">
+      <form id="writeForm">
+        <label id="writelabel" for="name">4. Write name and value: </label>
+        <input type="number" id="input_value" name="input_value" size="5" placeholder="0" step=0.01 />
+        <button type="submit">
+          Write to Profile
+        </button>
+      </form>
     </div>
 
-    <div id="group" class="panel">
-      <div class="row">
-        <form id="groupForm">
-          <label id="writelabel" for="name">Get members and add one </label>
-          <input
-            type="text"
-            id="group_value"
-            name="group_value"
-            size="50"
-          />
-          <button type="submit">
-            Update Group
-          </button>       
-        </form>
-      </div>
+    <dl class="display">
+      <dt>Writing status:&nbsp</dt>
+      <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
+    </dl>
+  </div>
 
-      <dl class="display">
-        <dt>Writing status:&nbsp</dt>
-        <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
-      </dl>
+  <div id="group" class="panel">
+    <div class="row">
+      <form id="groupForm">
+        <label id="writelabel" for="name">Get members and add one </label>
+        <input type="text" id="group_value" name="group_value" size="50" />
+        <button type="submit">
+          Update Group
+        </button>
+      </form>
     </div>
 
-     <div id="read" class="panel">
-       <div class="row">
-         <form id="readForm">
-           <label id="readlabel" for="webID"
-             >3. Check Account balance from person:
-           </label>
-           <button type="submit" name="btnRead" id="btnRead">
-             Get Balances
-           </button>
-         </form>
-       </div>
-       <dl class="display">
-         <dt>Schulden:&nbsp</dt>
-         <textarea id="labelFN" rows="10">...not read yet...</textarea>
-       </dl>
-     </div>
-   </body>
- </html>
+    <dl class="display">
+      <dt>Writing status:&nbsp</dt>
+      <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
+    </dl>
+  </div>
+
+  <div id="read" class="panel">
+    <div class="row">
+      <form id="readForm">
+        <label id="readlabel" for="webID">3. Check Account balance from person:
+        </label>
+        <button type="submit" name="btnRead" id="btnRead">
+          Get Balances
+        </button>
+      </form>
+    </div>
+    <dl class="display">
+      <dt>Schulden:&nbsp</dt>
+      <textarea id="labelFN" rows="10">...not read yet...</textarea>
+    </dl>
+  </div>
+
+  <button name="infoButton" id="infoButton">Console Log Info</button>
+</body>
+
+</html>
