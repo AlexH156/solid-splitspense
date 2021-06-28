@@ -1,6 +1,7 @@
 # Getting Started
 
 Alle relevanten Informationen über die Installation und den Start der Applikation finden Sie hier: https://pad.uni-muenster.de/_qqxij0zQfuw5yisKlODbQ
+Ein Beispielvideo findet ihr hier: https://uni-muenster.sciebo.de/s/LETl8XqovuPRtKO
 
 # mysolidapp
 
