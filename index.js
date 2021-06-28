@@ -108,10 +108,6 @@ async function writeData() {
                 } else {
                     newInt = value / membercount + await getBalance(members[i]);
                 }
-                //update history
-                var today = new Date().toLocaleDateString();
-                const oldhistory = getStringNoLocale(profile, fileLocation.history);
-                const newhistory = webID.toString() + " paid " + document.getElementById("input_value").value + "€ for " + document.getElementById("input_comment").value + " on " + today + " for the members: " + document.getElementById("input_members").value + ";" + oldhistory;
 
                 let updatedProfile = setDecimal(profile, fileLocation.base + "/" + members[i], newInt);
                 //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
@@ -134,7 +130,7 @@ async function writeData() {
         //update history
         var today = new Date().toLocaleDateString();
         const oldhistory = getStringNoLocale(profile, fileLocation.history);
-        const newhistory = webID.toString() + " paid " + document.getElementById("input_value").value + "€ for " + document.getElementById("input_comment").value + " on " + today + ";" + oldhistory;
+        const newhistory = webID.toString() + " paid " + document.getElementById("input_value").value + "€ for " + document.getElementById("input_comment").value + " on " + today + " for the members: " + document.getElementById("input_members").value + ";" + oldhistory;
 
         let updatedProfile = setStringNoLocale(profile, fileLocation.history, newhistory);
         const myChangedDataset = setThing(myDataset, updatedProfile);
@@ -160,7 +156,7 @@ async function getBalance(name) {
             myDataset,
             turtledatei
         );
-        const fn = getDecimal(profile, fileLocation.name);
+        const fn = getDecimal(profile, fileLocation.base + "/" + name);
         return fn;
     }
 }
@@ -234,6 +230,7 @@ async function folderSubmitfunc() {
         const allmembers = getStringNoLocale(profile, fileLocation.members);
         const groupinformation = getStringNoLocale(profile, fileLocation.information);
 
+        document.getElementById("input_members").value = allmembers;
         document.getElementById("group_value").value = allmembers;
         document.getElementById("groupinformation").innerHTML = groupinformation;
         document.getElementById("groupinformation").setAttribute("role", "alert");
