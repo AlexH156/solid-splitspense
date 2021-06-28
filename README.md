@@ -11,6 +11,7 @@ npm start
 
 
 # Docker
+Folgende Befehle ausführen, um die Applikation zu erstellen bzw. zu starten. Grundkenntnisse über Docker sollten vorhanden sein.
 
 **Build Image**
 sudo docker build -t mysolidapp . 
