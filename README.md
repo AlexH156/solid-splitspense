@@ -8,6 +8,7 @@ npm start
 
 # Docker
 
+## Ubuntu
 **Build Image**
 sudo docker build -t mysolidapp . 
 
@@ -19,3 +20,16 @@ sudo docker stop mysolidapp
 
 **Restart Container**
 sudo docker start mysolidapp
+
+## Windows
+**Build Image**
+docker build -t mysolidapp . 
+
+**Create Container an run**
+docker run -p 3000:3000 --name mysolidapp -d mysolidapp
+
+**Stop Container**
+docker stop mysolidapp
+
+**Restart Container**
+docker start mysolidapp
