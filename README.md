@@ -1,3 +1,7 @@
+# Getting Started
+Alle relevanten Informationen über die Installation und den Start der Applikation finden Sie hier:
+https://pad.uni-muenster.de/_qqxij0zQfuw5yisKlODbQ
+
 # mysolidapp
 
 
@@ -7,6 +11,7 @@ npm start
 
 
 # Docker
+Folgende Befehle ausführen, um die Applikation zu erstellen bzw. zu starten. Grundkenntnisse über Docker sollten vorhanden sein.
 
 ## Ubuntu
 **Build Image**
