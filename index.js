@@ -24,6 +24,7 @@ const buttonLogin = document.getElementById("btnLogin");
 const writeForm = document.getElementById("writeForm");
 const readForm = document.getElementById("readForm");
 const infoButton = document.getElementById("infoButton");
+const nullEverything = document.getElementById("nullEverything");
 const folderSubmit = document.getElementById("btnLinkSubmit");
 var session; // = new Session();
 var webID = "";
@@ -95,7 +96,7 @@ async function writeData() {
         if (document.getElementById("input_members") == null) {
             alert("No members could be found.");
         } else {
-            const tt = document.getElementById("input_members").value;
+            const tt = document.getElementById("input_members").value.replaceAll(" ","");
             const members = tt.split(",");
 
             const membercount = members.length;
@@ -199,7 +200,7 @@ async function updateGroup() {
             turtledatei
         );
 
-        let updatedProfile = setStringNoLocale(profile, fileLocation.members, document.getElementById("group_value").value);
+        let updatedProfile = setStringNoLocale(profile, fileLocation.members, document.getElementById("group_value").value.replaceAll(" ",""));
         const myChangedDataset = setThing(myDataset, updatedProfile);
         const savedProfileResource = await saveSolidDatasetAt(
             turtledatei,
@@ -268,4 +269,38 @@ infoButton.onclick = function() {
     console.log(webID + ":WebID");
     console.log(session);
     logintest();
+}
+
+nullEverything.onclick = async function(){
+    if (session.info.isLoggedIn == false) {
+        alert("You are not logged in. To continue please login.");
+    } 
+    else {
+        if (confirm('Are you sure you want to reset all data?')) {
+            const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
+            const profile = getThing(myDataset, turtledatei);;
+
+            const allmembers = getStringNoLocale(profile, fileLocation.members);
+            const members = allmembers.split(",");
+
+            for (var i in members) {
+                let updatedProfile = setDecimal(profile, fileLocation.base + "/" + members[i], 0.0);
+                const myChangedDataset = setThing(myDataset, updatedProfile);
+                const savedProfileResource = await saveSolidDatasetAt(
+                    turtledatei,
+                    myChangedDataset, { fetch: fetch }
+                );
+            }
+            //update history
+            let updatedProfile = setStringNoLocale(profile, fileLocation.history, "");
+            const myChangedDataset = setThing(myDataset, updatedProfile);
+            const savedProfileResource = await saveSolidDatasetAt(
+                turtledatei,
+                myChangedDataset, { fetch: fetch }
+            );
+            getAllBalances();
+        } 
+        else {
+        }
+    }
 }
