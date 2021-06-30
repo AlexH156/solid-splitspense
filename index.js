@@ -96,7 +96,7 @@ async function writeData() {
         if (document.getElementById("input_members") == null) {
             alert("No members could be found.");
         } else {
-            const tt = document.getElementById("input_members").value.replaceAll(" ","");
+            const tt = document.getElementById("input_members").value.replaceAll(" ","").toLowerCase();
             const members = tt.split(",");
 
             const membercount = members.length;
@@ -200,7 +200,7 @@ async function updateGroup() {
             turtledatei
         );
 
-        let updatedProfile = setStringNoLocale(profile, fileLocation.members, document.getElementById("group_value").value.replaceAll(" ",""));
+        let updatedProfile = setStringNoLocale(profile, fileLocation.members, document.getElementById("group_value").value.replaceAll(" ","").toLowerCase());
         const myChangedDataset = setThing(myDataset, updatedProfile);
         const savedProfileResource = await saveSolidDatasetAt(
             turtledatei,
