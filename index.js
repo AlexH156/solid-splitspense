@@ -177,7 +177,7 @@ async function getAllBalances() {
         var output = "";
         const mm = getStringNoLocale(profile, fileLocation.members);
         const members = mm.split(",");
-        members.forEach(member => output += member.toString() + ": " + getDecimal(profile, fileLocation.base + "/" + member) + "\n");
+        members.forEach(member => output += member.toString() + ": " + (Math.round(getDecimal(profile, fileLocation.base + "/" + member) * 100) / 100).toFixed(2) + "\n");
         const hh = getStringNoLocale(profile, fileLocation.history);
         const history = hh.split(";");
         output += "\nHistory: \n"
@@ -277,6 +277,7 @@ nullEverything.onclick = async function(){
     } 
     else {
         if (confirm('Are you sure you want to reset all data?')) {
+            //reset members
             const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
             const profile = getThing(myDataset, turtledatei);;
 
@@ -291,7 +292,7 @@ nullEverything.onclick = async function(){
                     myChangedDataset, { fetch: fetch }
                 );
             }
-            //update history
+            //reset history
             let updatedProfile = setStringNoLocale(profile, fileLocation.history, "");
             const myChangedDataset = setThing(myDataset, updatedProfile);
             const savedProfileResource = await saveSolidDatasetAt(
