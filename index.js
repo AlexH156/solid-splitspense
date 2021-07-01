@@ -19,6 +19,7 @@ import {
 } from "@inrupt/solid-client";
 import { Session, handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
 import { VCARD } from "@inrupt/vocab-common-rdf";
+import { createDocument } from "tripledoc";
 
 const buttonLogin = document.getElementById("btnLogin");
 const writeForm = document.getElementById("writeForm");
@@ -96,7 +97,7 @@ async function writeData() {
         if (document.getElementById("input_members") == null) {
             alert("No members could be found.");
         } else {
-            const tt = document.getElementById("input_members").value.replaceAll(" ","");
+            const tt = document.getElementById("input_members").value.replaceAll(" ", "");
             const members = tt.split(",");
 
             const membercount = members.length;
@@ -200,7 +201,7 @@ async function updateGroup() {
             turtledatei
         );
 
-        let updatedProfile = setStringNoLocale(profile, fileLocation.members, document.getElementById("group_value").value.replaceAll(" ",""));
+        let updatedProfile = setStringNoLocale(profile, fileLocation.members, document.getElementById("group_value").value.replaceAll(" ", ""));
         const myChangedDataset = setThing(myDataset, updatedProfile);
         const savedProfileResource = await saveSolidDatasetAt(
             turtledatei,
@@ -241,6 +242,12 @@ async function folderSubmitfunc() {
     }
 }
 
+async function createEmptyDocument(location) {
+    console.log(session.info.isLoggedIn)
+    const document = createDocument(location);
+    await document.save();
+}
+
 writeForm.addEventListener("submit", (event) => {
     event.preventDefault();
     //writeProfile();
@@ -268,14 +275,14 @@ folderSubmit.onclick = function() {
 infoButton.onclick = function() {
     console.log(webID + ":WebID");
     console.log(session);
-    logintest();
+    createEmptyDocument(fileLocation.base);
+
 }
 
-nullEverything.onclick = async function(){
+nullEverything.onclick = async function() {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
-    } 
-    else {
+    } else {
         if (confirm('Are you sure you want to reset all data?')) {
             const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
             const profile = getThing(myDataset, turtledatei);;
@@ -299,8 +306,6 @@ nullEverything.onclick = async function(){
                 myChangedDataset, { fetch: fetch }
             );
             getAllBalances();
-        } 
-        else {
-        }
+        } else {}
     }
 }
