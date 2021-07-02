@@ -13,20 +13,56 @@
 
 </header>
 
+<body>
+
+    <nav>
 
 
-<nav>
+        <button class="nav"><a class="nav_links" href="../index.html">Home</a></button>
+        <button class="nav"><a class="nav_links" href="./guide.html">Getting Started</a></button>
 
+    </nav>
+    <p>Das Projekt richtet sich an technisch versierte Benutzer, die am Besten Grundkenntnisse mit Solid und grundlegenden Datenstrukturen haben sollten.</p>
+    <br>
+    <h1>Vorbereitungen</h1>
+    <ol start=0>
+        Zum aktuellen Zeitpunkt ist eine automatische Initialisierung für Splitspense nicht möglich. Daher werden hier die Schritte aufgezeigt, wie diese geschehen kann.
+        
+        <li>Jeder Benutzer von Splitspense muss über ein Solid-Konto verfügen. Unterstützt werden alle Anbieter.
+            n</li>
+        <li>Aus einer Gruppe muss es einen Administrator geben. Dieser verwaltet die Datei, in der die Finanzausgaben dokumentiert werden. Dieser Administrator muss in seinem Solidprofil einen Ordner mit beliebigen Namen erstellen. Erreichbar ist das Solidprofil über [webID].[anbieter] (z. B. https://alexh156.solidcommunity.net/). Dort gelangt man über den zweiten Tab (Ordnersymbol) zur Dateistruktur. Über das grüne Plus und dem Ordnersymbol in der Leiste (zweitletzte) kann ein neuer Ordner erstellt werden.
+        </li>
+        <li>Dieser Ordner ist noch privat. Über das Schloss-Symbol neben dem aufgeklappten Ordner können die Zugriffsrechte verwaltet werden. Es empfiehlt sich, sich selbst und alle Mitglieder als Owner zu hinterlegen. Über das grüne Plus und dem einzelnen Männchen, kann unter Angabe der vollständigen WebID ein Mitglied hinzugefügt werden. Durch Drag-and-Drop kann jedes Mitglied als Owner eingestuft werden.
+        </li>
+        <li>Die eigentliche Datei wird erstellt durch das grüne Plus im Ordner und dann das </>-Symbol. Nennen Sie die Datei “splitspense.ttl” und fügen Sie den Inhalt dieser Datei ein:
+            https://alexh156.solidcommunity.net/public/splitspense.txt</li>
+        <li>Ersetzen Sie “Test Gruppe” mit einer Beschreibung für Ihre Gruppe. Ersetzen Sie die members durch die WebID-Kürzel (ohne Anbieter) Ihrer Mitglieder (wichtig, sonst funktioniert es nicht). Setzen Sie keine Leerzeichen, trennen Sie die Mitglieder mit einem einfachen “,”. Für die History müssen Sie nichts eintragen, dies geschieht automatisch. Klicken Sie auf den grünen Haken zum Speichern.
+        </li>
+        <li>Sie sind nun bereit zu starten!</li>
+    </ol>
 
-    <button class="nav"><a class="nav_links" href="../index.html">Home</a></button>
-    <button class="nav"><a class="nav_links" href="./guide.html">Getting Started</a></button>
+    <h2>Benutzung von Splitspense</h2>
+    <ol>
+        Die Benutzung von Splitspense ist intuitiv, wird hier jedoch nochmal genau erläutert.
+        <li>Wählen Sie im ersten Kasten Ihren Solid-Provider aus oder falls nicht vorhanden, tippen Sie ihn ein. Beim Klick auf “Login” sollten Sie auf die Anmeldeseite weitergeleitet werden.
+        </li>
+        <li>Geben Sie unter dem Login den Pfad zur Datei an, der von Ihrem Administrator verwaltet wird. Ein Beispiel wird Ihnen angezeigt. Die respektive Datei liegt unter https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl. Klicken Sie auf “Submit”. Eine Gruppenbeschreibung, sowie die Mitglieder und deren Kontostand sollte nun angezeigt werden.
+        </li>
+        <li>Im nächsten Kasten können Sie eine Ausgabe eintragen. Im ersten Feld kommt die Höhe der Ausgabe, im Zweiten der Zweck (eine Beschreibung) und im dritten Feld die beteiligten Mitglieder. War die Ausgabe für die gesamte Gruppe müssen Sie nichts am dritten Feld ändern, andernfalls geben sie die beteiligten Mitglieder mittels der WebID an, getrennt mit einem Komma. Beim Klick auf “Insert Expense” wird der neue Betrag für alle Mitglieder berechnet und die aktualisierten Kontostände angezeigt, sobald verfügbar.
+        </li>
+        <li>Im dritten Kasten ist es möglich Mitglieder nachträglich hinzuzufügen oder zu entfernen. Achtung: Die Angabe des Mitglieds geschieht mithilfe der WebID. Hinweis: Bereits hinzugefügte Beträge werden nicht auf neue Mitglieder verteilt, genauso wenig wie die Beträge von entfernten Mitgliedern nicht aufgeteilt werden.
+        </li>
+        <li>Im letzten Kasten werden die aktuellen Kontostände der Mitglieder, sowie eine Historie angezeigt. Mithilfe des Buttons “Get Balances” werden diese aktualisiert.
+        </li>
+        <li>Reset Data TODO
+        </li>
+    </ol>
+<br>
+    <h3>Video example</h3>
+    <ol>Following is a video for getting started, which was recorded in development. Therefore, it could look a little bit different.</ol>
+    <video src="../splitspense-example.mp4" width="640" height="480" controls>
+        Your browser doesn't support this video.
+    </video>
 
-</nav>
-
-<p>
-    <a href=https://pad.uni-muenster.de/_qqxij0zQfuw5yisKlODbQ?view>Dokument</a>
-</p>
-
-
-
+</body>
 </html>

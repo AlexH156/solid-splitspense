@@ -112,3 +112,9 @@ input {
     min-width: 500px;
     min-height: 400;
 }
+
+li {
+    display: list-item;
+    list-style-position: inside;
+    padding: 15px;
+  }
