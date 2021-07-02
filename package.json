@@ -29,7 +29,8 @@
         "npm-start-command": "^1.0.1",
         "parcel-bundler": "^1.12.5",
         "solid-auth-client": "^2.5.6",
-        "stream-browserify": "^3.0.0"
+        "stream-browserify": "^3.0.0",
+        "tripledoc": "^4.4.0"
     },
     "browserslist": [
         "last 3 and_chr versions",
