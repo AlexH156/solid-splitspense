@@ -18,9 +18,6 @@ import {
     getAgentAccess
 } from "@inrupt/solid-client";
 import { Session, handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
-//import { VCARD } from "@inrupt/vocab-common-rdf";
-// import { createDocument, fetchDocument } from "tripledoc";
-// import auth from 'solid-auth-client';
 
 const buttonLogin = document.getElementById("btnLogin");
 const writeForm = document.getElementById("writeForm");
@@ -29,7 +26,7 @@ const infoButton = document.getElementById("infoButton");
 const nullEverything = document.getElementById("nullEverything");
 const folderSubmit = document.getElementById("btnLinkSubmit");
 const groupNameButton = document.getElementById("btnEdit");
-var session; // = new Session();
+var session;
 var webID = "";
 var fileLocation = {
     base: "",
@@ -39,9 +36,6 @@ var fileLocation = {
     name: "",
     information: "",
 }
-
-
-//var turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
 var turtledatei = "";
 
 
@@ -67,14 +61,8 @@ async function handleRedirectAfterLogin() {
         webID = session.info.webId.replace("https://", "").replace("http://", "").split(".")[0];
         document.getElementById(
             "labelStatus"
-            //).innerHTML = `Your session is logged in with the WebID [<a target="_blank" href="${session.info.webId}">${session.info.webId}</a>].`;
-        ).innerHTML = "Welcome " + webID + " to Splitspense. Your are logged in.";
+        ).innerHTML = "Welcome " + webID + " to Splitspense. You are logged in.";
         document.getElementById("labelStatus").setAttribute("role", "alert");
-
-        // document.getElementById("group_value").value = allmembers;
-        // document.getElementById("input_members").value = allmembers;
-        // document.getElementById("groupinformation").innerHTML = "Group description: " + groupinformation;
-        // console.log("webid gepseichert");
     }
 }
 handleRedirectAfterLogin();
@@ -86,11 +74,10 @@ async function writeData() {
     } else {
         const value = document.getElementById("input_value").valueAsNumber;
         // 1a. Start with an existing Thing (i.e., profile).
-        // Note: Login code has been omitted for brevity. See the Prerequisite section above.
-        // ...
-
+        // Note: Login code has been omitted for brevity. See the Prerequisite section above
         const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
         const profile = getThing(myDataset, turtledatei);
+
         // 1b. Modify the thing; 
         // Note: solid-client functions do not modify objects passed in as arguments. 
         // Instead the functions return new objects with the modifications.
@@ -104,7 +91,6 @@ async function writeData() {
             const members = tt.split(",");
 
             const membercount = members.length;
-            //const admin = getStringNoLocale(profile, "https://alexh156.solidcommunity.net/Splitspense/admin");
             for (var i in members) {
                 var newInt = 0.0;
                 if (members[i] == webID) {
@@ -115,8 +101,6 @@ async function writeData() {
                 }
 
                 let updatedProfile = setDecimal(profile, fileLocation.base + "/" + members[i], newInt);
-                //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "docs");
-                //updatedProfile = addStringNoLocale(updatedProfile, FOAF.nick, "example");
 
                 // 2. Update SolidDataset with the updated Thing (i.e., updatedProfile). 
                 // Note:  solid-client functions do not modify objects passed in as arguments. 
@@ -124,7 +108,6 @@ async function writeData() {
                 // That is, setThing returns a new SolidDataset and
                 // - myDataset remains unchanged.
                 // - updatedProfile remains unchanged.
-
                 const myChangedDataset = setThing(myDataset, updatedProfile);
                 const savedProfileResource = await saveSolidDatasetAt(
                     turtledatei,
@@ -149,6 +132,7 @@ async function writeData() {
 }
 
 
+// return the balance of given name
 async function getBalance(name) {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
@@ -166,6 +150,7 @@ async function getBalance(name) {
     }
 }
 
+// print all balances and the history in the textbox
 async function getAllBalances() {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
@@ -191,6 +176,8 @@ async function getAllBalances() {
     }
 }
 
+
+// update the members 
 async function updateGroup() {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
@@ -214,11 +201,12 @@ async function updateGroup() {
     }
 }
 
+
+// Set the folder for this session and update all values
 async function folderSubmitfunc() {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
     } else {
-        console.log("test")
         fileLocation.base = document.getElementById("folderLink").value;
         fileLocation.splitspense = fileLocation.base + "/splitspense.ttl";
         fileLocation.members = fileLocation.base + "/members";
@@ -238,12 +226,12 @@ async function folderSubmitfunc() {
         document.getElementById("input_members").value = allmembers;
         document.getElementById("group_value").value = allmembers;
         document.getElementById("groupinformation").value = groupinformation;
-        //document.getElementById("groupinformation").setAttribute("role", "alert");
 
         console.log("webid gepseichert" + groupinformation);
         getAllBalances();
     }
 }
+
 
 async function editGroupName() {
     if (session.info.isLoggedIn == false) {
@@ -266,58 +254,19 @@ async function editGroupName() {
     }
 
 }
-/*
-// Test ob Dokument erstellt werden kann
-async function createEmptyDocument(location) {
-
-    console.log(session.info.isLoggedIn)
-    const document = createDocument(location);
-    await document.save();
-}
-
-writeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    //writeProfile();
-    writeData();
-});
-
-*/
-// async function getPublicAccessfunc() {
-//     getPublicAccess("https://nilskl.inrupt.net/Splitspense2/", // Resource
-//         { fetch: fetch } // fetch function from authenticated session
-//     ).then(access => {
-//         if (access === null) {
-//             console.log("Could not load access details for this Resource.");
-//         } else {
-//             console.log("Returned Access:: ", JSON.stringify(access));
-//             console.log("Everyone", (access.read ? 'CAN' : 'CANNOT'), "read the Resource.");
-//             console.log("Everyone", (access.append ? 'CAN' : 'CANNOT'), "add data to the Resource.");
-//             console.log("Everyone", (access.write ? 'CAN' : 'CANNOT'), "change data in the Resource.");
-//             console.log("Everyone", (access.controlRead ? 'CAN' : 'CANNOT'), "see access to the Resource.");
-//             console.log("Everyone", (access.controlWrite ? 'CAN' : 'CANNOT'), "change access to the Resource.");
-//         }
-//     });
-// }
-
-
 
 readForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    //readProfile();
-    //readFileFromPod(document.getElementById("labelFN"));
     getAllBalances();
 });
 
 writeForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    //writeProfile();
     writeData();
 });
 
 groupForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    //readProfile();
-    //readFileFromPod(document.getElementById("labelFN"));
     updateGroup();
 });
 
@@ -337,12 +286,8 @@ infoButton.onclick = function() {
 
 groupNameButton.onclick = function() {
     editGroupName();
-
-    //   document.getElementById("groupinformation").setAttribute("role", "alert");
     document.getElementById("labelStatusgroup").innerHTML = "New Group description saved!";
     document.getElementById("labelStatusgroup").setAttribute("role", "alert");
-
-
 }
 
 nullEverything.onclick = async function() {
