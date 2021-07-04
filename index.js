@@ -18,8 +18,9 @@ import {
     getAgentAccess
 } from "@inrupt/solid-client";
 import { Session, handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
-import { VCARD } from "@inrupt/vocab-common-rdf";
-import { createDocument } from "tripledoc";
+//import { VCARD } from "@inrupt/vocab-common-rdf";
+// import { createDocument, fetchDocument } from "tripledoc";
+// import auth from 'solid-auth-client';
 
 const buttonLogin = document.getElementById("btnLogin");
 const writeForm = document.getElementById("writeForm");
@@ -39,7 +40,8 @@ var fileLocation = {
 }
 
 
-var turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+//var turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+var turtledatei = "";
 
 
 function loginToWebProvider(webIDProvider) {
@@ -215,7 +217,7 @@ async function folderSubmitfunc() {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
     } else {
-
+        console.log("test")
         fileLocation.base = document.getElementById("folderLink").value;
         fileLocation.splitspense = fileLocation.base + "/splitspense.ttl";
         fileLocation.members = fileLocation.base + "/members";
@@ -242,7 +244,10 @@ async function folderSubmitfunc() {
     }
 }
 
+/*
+// Test ob Dokument erstellt werden kann
 async function createEmptyDocument(location) {
+
     console.log(session.info.isLoggedIn)
     const document = createDocument(location);
     await document.save();
@@ -253,6 +258,24 @@ writeForm.addEventListener("submit", (event) => {
     //writeProfile();
     writeData();
 });
+
+*/
+async function getPublicAccessfunc() {
+    getPublicAccess("https://nilskl.inrupt.net/Splitspense2/", // Resource
+        { fetch: fetch } // fetch function from authenticated session
+    ).then(access => {
+        if (access === null) {
+            console.log("Could not load access details for this Resource.");
+        } else {
+            console.log("Returned Access:: ", JSON.stringify(access));
+            console.log("Everyone", (access.read ? 'CAN' : 'CANNOT'), "read the Resource.");
+            console.log("Everyone", (access.append ? 'CAN' : 'CANNOT'), "add data to the Resource.");
+            console.log("Everyone", (access.write ? 'CAN' : 'CANNOT'), "change data in the Resource.");
+            console.log("Everyone", (access.controlRead ? 'CAN' : 'CANNOT'), "see access to the Resource.");
+            console.log("Everyone", (access.controlWrite ? 'CAN' : 'CANNOT'), "change access to the Resource.");
+        }
+    });
+}
 
 readForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -273,9 +296,11 @@ folderSubmit.onclick = function() {
 }
 
 infoButton.onclick = function() {
-    console.log(webID + ":WebID");
-    console.log(session);
-    createEmptyDocument(fileLocation.base);
+    //console.log(webID + ":WebID");
+    //console.log(session);
+
+    // createEmptyDocument(fileLocation.base);
+    getPublicAccessfunc();
 
 }
 

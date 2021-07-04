@@ -117,4 +117,9 @@ li {
     display: list-item;
     list-style-position: inside;
     padding: 15px;
-  }
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
