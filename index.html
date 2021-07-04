@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 
+
 <head>
     <meta charset="utf-8" />
     <title>Splitspense</title>
@@ -8,104 +9,103 @@
     <link rel="stylesheet" href="styles.css" />
 </head>
 
-<header>
+<div class="seperator">
     <a href="./index.html"><img class="logo" src="images/logo.png" alt="logo"> </a>
     <h3>Track and split your expenses across a group</h3>
 
-</header>
+</div>
+
 
 <body>
     <nav>
 
         <ul>
             <button class="nav"><a class="nav_links" href="pages/guide.html">Getting Started</a></button>
+            <button class="nav" style="float: right;"><a target="_blank" class="nav_links" href="https://github.com/AlexH156/solid-splitspense">Source Code</a></button>
         </ul>
     </nav>
+    <div class="seperator">
+    </div>
 
-    </header>
 
 
-
-    <section class="panel login-panel">
-        <label id="labelLogin" for="btnLogin">1. Select or Enter a Pod-Provider</label>
-        <input type="text" name="city" list="webID-Provider" id="dropdownID" value="https://">
+    <div class="panel">
+        <label id="labelLogin" for="btnLogin">1. Select or Enter a Pod-Provider:</label>
+        <input type="text" name="city" list="webID-Provider" id="dropdownID" value="https://" size="30">
         <datalist id="webID-Provider">
           <option value="https://inrupt.net">
           <option value="https://solidcommunity.net/">
         </datalist>
-        <button name="btnLogin" id="btnLogin">Login</button>
-        <label id="labelLogin" for="btnLogin"></label>
-        <p><label id="labelStatus" class="labelStatus">Please Log into your Solid Account.</label></p>
+        <button name="btnLogin" id="btnLogin" class="buttonlogin">Login</button>
+        <label id="labelLogin" for="btnLogin"></label><br />
+        <label id="normal">&#8205</label>
+        <label id="labelStatus" class="labelStatus loginlabel">Please Log into your Solid Account.</label>
 
-        </p><br /> 2. Provide Splitspense Folder Location
+        <p>&#8205</p>
+
+        <label> 2. Provide Splitspense Folder Location:</label>
         <input type="text" id="folderLink" name="folderLink" size="30" value="https://">
         <!-- ""https://alexh156.solidcommunity.net/Splitspense"" -->
-        <button name="btnLinkSubmit" id="btnLinkSubmit">Submit</button> <br />
-        <p> Group description:
-            <label id="groupinformation" class="labelStatus"></label>
-        </p>
+        <button name="btnLinkSubmit" id="btnLinkSubmit" class="buttonlogin">Submit</button> <br />
+        <label for="normal" id="labelStatusgroup" class="labelStatus">Group description:</label>
 
-    </section>
+        <input id="groupinformation" class="labelStatus" size="30"></input>
+        <button name="btnEdit" id="btnEdit" class="buttonlogin">Save</button>
 
-    <section id="read" class="panel">
-        <form id="writeForm">
-            <p> <label id="writelabel" for="name"> How much did you paid? </label>
-                <input class="numberbox" type="number" id="input_value" name="input_value" placeholder="0.00" step=0.01 />
+    </div>
 
-            </p><br />
 
-            <p>
-                <label id="writelabel" for="name"> For what did you paid? </label>
-                <input type="text" id="input_comment" size="50" name="input_comment" size="30" placeholder="purpose" />
-            </p><br />
 
-            <label id="writelabel" for="name"> For whom? (default is all): </label>
-            <input type="text" id="input_members" name="input_members" size="40" placeholder="members" />
-            <p><button type="submit">Insert expense</button></p>
+    <div class="panel">
+        <div class="seperator">
+
+            <form id="writeForm">
+                <p> <label id="writelabel" for="name"> How much did you paid? </label>
+                    <input class="numberbox" type="number" id="input_value" name="input_value" placeholder="0.00" step=0.01 />
+
+                </p><br />
+                <p>
+                    <label id="writelabel" for="name"> For what did you paid? </label>
+                    <input type="text" id="input_comment" name="input_comment" size="30" placeholder="purpose" />
+                </p><br />
+
+                <label id="writelabel" for="name"> For whom? (default is all): </label>
+                <input type="text" id="input_members" name="input_members" size="30" placeholder="members" />
+
+                <p>
+                    <label id="writelabel" for="name"> &#8205 </label>
+                    <button class="largebutton" type="submit">Insert expense</button></p>
+                <div class="seperator">
+                </div>
+
+            </form>
+            <br />
+            <form id="groupForm"></form>
+            <label id="writelabel" for="name">(optional) Add member to your group</label>
+
+            <input type="text" id="group_value" name="group_value" size="30" /><br />
+            <label id="writelabel" for="name"> &#8205 </label>
+            <button class="largebutton" type="submit">Update Group</button>
+        </div>
+
         </form>
 
+        <form id="readForm">
+            <label id="readlabel" for="webID">Check Account balance from person:</label>
+            <button type="submit" name="btnRead" id="btnRead">Get Balances</button>
+        </form>
 
-    </section>
+        <dl class="display">
+            <textarea readonly class="balance-box" wrap="off" id="labelFN" rows="10">...not read yet...</textarea>
+        </dl>
+    </div>
+    <div class="seperator">
+    </div>
 
 
-
-    <section>
-        <div id="group" class="panel">
-            <div class="row">
-                <form id="groupForm">
-                    <label id="writelabel" for="name">(optional) Add member to your group</label>
-                    <input type="text" id="group_value" name="group_value" size="50" />
-                    <button type="submit">
-            Update Group
-          </button>
-                </form>
-            </div>
-
-            <!-- <dl class="display">
-        <dt>Writing status:&nbsp</dt>
-        <dd id="labelWriteStatus" class="labelStatus">...not written yet...</dd>
-      </dl> -->
-        </div>
-    </section>
-    <section>
-        <div id="read" class="panel">
-            <div class="row">
-                <form id="readForm">
-                    <label id="readlabel" for="webID">Check Account balance from person:
-          </label>
-                    <button type="submit" name="btnRead" id="btnRead">
-            Get Balances
-          </button>
-                </form>
-            </div>
-            <dl class="display">
-                <textarea readonly class="balance-box" wrap="off" id="labelFN" rows="10">...not read yet...</textarea>
-            </dl>
-        </div>
-    </section>
     <button name="infoButton" id="infoButton">Console Log Info</button>
     <button name="nullEverything" id="nullEverything">Reset data</button>
-    <button class="nav" style="float: right;"><a target="_blank" class="nav_links" href="https://github.com/AlexH156/solid-splitspense">Source Code</a></button>
 </body>
+
 
 </html>

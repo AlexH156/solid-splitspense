@@ -18,8 +18,9 @@ import {
     getAgentAccess
 } from "@inrupt/solid-client";
 import { Session, handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
-import { VCARD } from "@inrupt/vocab-common-rdf";
-import { createDocument } from "tripledoc";
+//import { VCARD } from "@inrupt/vocab-common-rdf";
+// import { createDocument, fetchDocument } from "tripledoc";
+// import auth from 'solid-auth-client';
 
 const buttonLogin = document.getElementById("btnLogin");
 const writeForm = document.getElementById("writeForm");
@@ -27,6 +28,7 @@ const readForm = document.getElementById("readForm");
 const infoButton = document.getElementById("infoButton");
 const nullEverything = document.getElementById("nullEverything");
 const folderSubmit = document.getElementById("btnLinkSubmit");
+const groupNameButton = document.getElementById("btnEdit");
 var session; // = new Session();
 var webID = "";
 var fileLocation = {
@@ -39,7 +41,8 @@ var fileLocation = {
 }
 
 
-var turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+//var turtledatei = "https://alexh156.solidcommunity.net/Splitspense/splitspense.ttl";
+var turtledatei = "";
 
 
 function loginToWebProvider(webIDProvider) {
@@ -87,7 +90,7 @@ async function writeData() {
         // ...
 
         const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
-        const profile = getThing(myDataset, turtledatei);;
+        const profile = getThing(myDataset, turtledatei);
         // 1b. Modify the thing; 
         // Note: solid-client functions do not modify objects passed in as arguments. 
         // Instead the functions return new objects with the modifications.
@@ -215,7 +218,7 @@ async function folderSubmitfunc() {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
     } else {
-
+        console.log("test")
         fileLocation.base = document.getElementById("folderLink").value;
         fileLocation.splitspense = fileLocation.base + "/splitspense.ttl";
         fileLocation.members = fileLocation.base + "/members";
@@ -230,19 +233,43 @@ async function folderSubmitfunc() {
         const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
         const profile = getThing(myDataset, turtledatei);
         const allmembers = getStringNoLocale(profile, fileLocation.members);
-        const groupinformation = getStringNoLocale(profile, fileLocation.information);
+        var groupinformation = getStringNoLocale(profile, fileLocation.information);
 
         document.getElementById("input_members").value = allmembers;
         document.getElementById("group_value").value = allmembers;
-        document.getElementById("groupinformation").innerHTML = groupinformation;
-        document.getElementById("groupinformation").setAttribute("role", "alert");
+        document.getElementById("groupinformation").value = groupinformation;
+        //document.getElementById("groupinformation").setAttribute("role", "alert");
 
-        console.log("webid gepseichert");
+        console.log("webid gepseichert" + groupinformation);
         getAllBalances();
     }
 }
 
+async function editGroupName() {
+    if (session.info.isLoggedIn == false) {
+        alert("You are not logged in. To continue please login.");
+    } else {
+        const newgroupinformation = document.getElementById("groupinformation").value;
+
+
+        const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
+
+        const profile = getThing(myDataset, turtledatei);
+
+        let updatedProfile = setStringNoLocale(profile, fileLocation.information, newgroupinformation);
+
+        const myChangedDataset = setThing(myDataset, updatedProfile);
+        const savedProfileResource = await saveSolidDatasetAt(
+            turtledatei,
+            myChangedDataset, { fetch: fetch });
+        return newgroupinformation;
+    }
+
+}
+/*
+// Test ob Dokument erstellt werden kann
 async function createEmptyDocument(location) {
+
     console.log(session.info.isLoggedIn)
     const document = createDocument(location);
     await document.save();
@@ -254,11 +281,37 @@ writeForm.addEventListener("submit", (event) => {
     writeData();
 });
 
+*/
+// async function getPublicAccessfunc() {
+//     getPublicAccess("https://nilskl.inrupt.net/Splitspense2/", // Resource
+//         { fetch: fetch } // fetch function from authenticated session
+//     ).then(access => {
+//         if (access === null) {
+//             console.log("Could not load access details for this Resource.");
+//         } else {
+//             console.log("Returned Access:: ", JSON.stringify(access));
+//             console.log("Everyone", (access.read ? 'CAN' : 'CANNOT'), "read the Resource.");
+//             console.log("Everyone", (access.append ? 'CAN' : 'CANNOT'), "add data to the Resource.");
+//             console.log("Everyone", (access.write ? 'CAN' : 'CANNOT'), "change data in the Resource.");
+//             console.log("Everyone", (access.controlRead ? 'CAN' : 'CANNOT'), "see access to the Resource.");
+//             console.log("Everyone", (access.controlWrite ? 'CAN' : 'CANNOT'), "change access to the Resource.");
+//         }
+//     });
+// }
+
+
+
 readForm.addEventListener("submit", (event) => {
     event.preventDefault();
     //readProfile();
     //readFileFromPod(document.getElementById("labelFN"));
     getAllBalances();
+});
+
+writeForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    //writeProfile();
+    writeData();
 });
 
 groupForm.addEventListener("submit", (event) => {
@@ -273,9 +326,22 @@ folderSubmit.onclick = function() {
 }
 
 infoButton.onclick = function() {
-    console.log(webID + ":WebID");
-    console.log(session);
-    createEmptyDocument(fileLocation.base);
+    //console.log(webID + ":WebID");
+    //console.log(session);
+
+    // createEmptyDocument(fileLocation.base);
+    //getPublicAccessfunc();
+    console.log("Button is functioning")
+
+}
+
+groupNameButton.onclick = function() {
+    editGroupName();
+
+    //   document.getElementById("groupinformation").setAttribute("role", "alert");
+    document.getElementById("labelStatusgroup").innerHTML = "New Group description saved!";
+    document.getElementById("labelStatusgroup").setAttribute("role", "alert");
+
 
 }
 

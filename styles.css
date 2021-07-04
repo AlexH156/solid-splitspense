@@ -8,6 +8,13 @@
     text-decoration: none;
 }
 
+body {
+    background: #F6F0ED;
+    /* background: rgb(255, 255, 255);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 41%, rgba(158, 193, 241, 1) 100%); */
+    max-width: 1200px;
+}
+
 h3 {
     margin: 1rem 1.2rem 1rem 1.4rem;
     display: inline;
@@ -15,23 +22,39 @@ h3 {
     top: -20px;
 }
 
+#topbanner {
+    background-color: #e6f4f9;
+}
+
 .nav,
 button {
-    margin: 1rem 1.2rem 1rem 1.4rem;
     padding: 5px 15px;
+    margin: 1rem 1.2rem 1rem 1.4rem;
     color: black;
     transition: all 0.3s ease 0s;
     cursor: pointer;
     border-style: solid;
-    background: transparent;
+    background-color: #7EA8BE;
     color: black;
-    border-color: black;
-    border-radius: 4px;
-    border: 1px solid #005b81;
+    border: 1px solid black;
+}
+
+.nav {
+    width: 180px;
+    background: transparent;
+}
+
+.buttonlogin {
+    width: 120px;
 }
 
 button:hover {
-    background-color: rgb(184, 196, 194);
+    background-color: #C2948A;
+}
+
+.largebutton {
+    width: 350px;
+    margin: 1rem 1.2rem 1rem 0rem;
 }
 
 .nav_links {
@@ -49,32 +72,38 @@ button:hover {
     display: inline;
 }
 
+label {
+    display: inline-block;
+    width: 320px;
+}
+
 header {
     border-bottom: #5795b9 solid;
     padding-left: 0.5rem;
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
+}
+
+.seperator {
+    border-bottom: #7EA8BE solid;
+    padding: 3px 3px 3px 3px;
 }
 
 .panel {
-    border: 1px solid #005b81;
-    border-radius: 4px;
+    border: 1px solid;
+    box-shadow: transparent;
     box-shadow: rgb(184, 196, 194) 0px 4px 10px -4px;
     box-sizing: border-box;
-    padding: 20px 10px 30px 40px;
+    padding: 20px 20px 30px 40px;
     margin: 1rem 1.2rem 1rem 1.2rem;
+    background: #7EA8BE;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 41%, rgba(158, 193, 241, 0) 100%);
+    max-width: 1200px;
 }
 
-.login-panel {
-    height: 250px;
-}
 
-#login {
+/* #main {
     background: white;
-}
-
-#read {
-    background: #e6f4f9;
-}
+} */
 
 .labelStatus[role="alert"] {
     padding-left: 0rem;
@@ -101,20 +130,15 @@ input[type='number'] {
 
 input {
     padding: 5px 15px;
-    border-radius: 4px;
+    border-radius: 0px;
     border: 1px solid #005b81;
+    width: 350px;
 }
 
 .balance-box {
     border-width: 1px;
-    border-radius: 1px;
+    border-radius: 0px;
     padding: 5px 5px 5px 5px;
-    min-width: 500px;
+    min-width: 850px;
     min-height: 400;
 }
-
-li {
-    display: list-item;
-    list-style-position: inside;
-    padding: 15px;
-  }
