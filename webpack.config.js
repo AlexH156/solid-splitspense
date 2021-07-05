@@ -27,7 +27,7 @@ module.exports = {
     },
     devServer: {
         contentBase: "./",
-        host: '0',
+        host: 'localhost',
         port: 8080
     },
     resolve: {
