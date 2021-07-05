@@ -1,11 +1,11 @@
-# Getting Started
+# Getting Started 
+This Application was developed for a Project at WWU Münster, Germany. It can be used with the Solid Plattform, and should give the opportunity to learn simple programming and the use of the Solid Plattform.
+The content is provided by [AlexH156](https://github.com/AlexH156) and [NilKl00](https://github.com/NilKl00). We are students at WWU in Münster, Germany.
+Parts of the Programming are inspired by the Tutorial from Inrupt: [Inrupt: Getting Started](https://docs.inrupt.com/developer-tools/javascript/client-libraries/tutorial/getting-started/)
 
-Alle relevanten Informationen über die Installation und den Start der Applikation finden Sie hier: https://pad.uni-muenster.de/_qqxij0zQfuw5yisKlODbQ
-
-Ein Beispielvideo findet ihr hier: https://uni-muenster.sciebo.de/s/LETl8XqovuPRtKO
-
-# mysolidapp
-
+# Use Splitspense with Node and Webpack for development
+npm --version 6.14.13
+node --version 14.17.2
 
 npm install @inrupt/solid-client @inrupt/solid-client-authn-browser
 npm install webpack webpack-cli webpack-dev-server css-loader style-loader  --save-dev
@@ -16,6 +16,8 @@ npm start
 You can use the following commands to test the App with Docker. The requirement is that you have installed Docker, more on that here: [Get Docker](https://docs.docker.com/get-docker/)
 
 ## Pull the image from Docker Hub
+Here is the Docker Image on Docker Hub: [niklx/solid_splitspense](https://hub.docker.com/r/niklx/solid_splitspense/tags?page=1&ordering=last_updated)
+
 sudo docker pull niklx/solid_splitspense:1.0.0
 sudo docker run -p 8080:8080 niklx/solid_splitspense:1.0.0
 
@@ -23,18 +25,23 @@ The App is running on your localhost:8080.
 
 ## Build Image by yourself
 First change in webpack.conf.js the field 
- ```   devServer: {
+```
+devServer: {
         contentBase: "./",
         host: 'localhost',
         port: 8080
-    }, ```
+    }, 
+
+```
 to
- ```   devServer: {
+```
+devServer: {
         contentBase: "./",
         host: '0',
         port: 8080
-    }, ```
-
+    },
+    
+```
 
 Start with **building the image**.
 Linux: ```sudo docker build -t splitspense . ```
@@ -65,4 +72,8 @@ Windows: ```docker start splitspense```
 * [Tripledoc - Writing a Solid App](https://vincenttunru.gitlab.io/tripledoc/docs/writing-a-solid-app/writing-a-solid-app.html) guter Stepbystep Guide mit stärkerem Fokus auf LinkedData und verwendum des FOAF Vokabulars
 
 * [Dockerizing a Node.js](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/) ist ein Guter Guide mit dem man ein Dockerfile für die Solid-App erstellen kann. 
+
+## Getting Started Deutsch
+Alle relevanten Informationen über Nutzung der Applikation finden Sie hier auf Deutsch: https://pad.uni-muenster.de/_qqxij0zQfuw5yisKlODbQ?view
+
 
