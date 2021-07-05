@@ -10,10 +10,18 @@ You can use the following commands to test the App with Docker. The requirement 
 ## Pull the image from Docker Hub
 Here is the Docker Image on Docker Hub: [niklx/solid_splitspense](https://hub.docker.com/r/niklx/solid_splitspense/tags?page=1&ordering=last_updated)
 
-sudo docker pull niklx/solid_splitspense:1.0.1
-sudo docker run -p 8080:8080 niklx/solid_splitspense:1.0.1
+Linux: ```sudo docker pull niklx/solid_splitspense:1.0.2```
+Windows: ```docker pull niklx/solid_splitspense:1.0.2```
+
+Linux: ```sudo docker run -p 8080:8080 -d --name splitspense niklx/solid_splitspense:1.0.2```
+Windows: ```docker run -p 8080:8080 -d --name splitspense niklx/solid_splitspense:1.0.2```
+
 
 The App is running on your localhost:8080.
+
+
+
+If not sure if this is the latest version, check [niklx/solid_splitspense](https://hub.docker.com/r/niklx/solid_splitspense/tags?page=1&ordering=last_updated) for the latest update.
 
 ## Build Image by yourself
 First change in webpack.conf.js the field 
@@ -50,6 +58,11 @@ Windows: ```docker stop splitspense```
 **Restart Container**
 Linux: ```sudo docker start splitspense```
 Windows: ```docker start splitspense```
+
+**Remove Container to start a new one with the same Name**
+Linux: ```sudo docker rm splitspense```
+Windows: ```docker rm splitspense```
+
 
 # Use Splitspense with Node and Webpack for development
 npm --version 6.14.13
