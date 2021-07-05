@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
-RUN npm install @inrupt/solid-client @inrupt/solid-client-authn-browser @inrupt/vocab-common-rdf 
+RUN npm install @inrupt/solid-client @inrupt/solid-client-authn-browser
 RUN npm install webpack webpack-cli webpack-dev-server css-loader style-loader  --save-dev
 
 # If you are building your code for production
@@ -18,5 +18,5 @@ RUN npm install webpack webpack-cli webpack-dev-server css-loader style-loader  
 # Bundle app source
 COPY . .
 
-EXPOSE 3000
+EXPOSE 8080
 CMD [ "npm", "start" ]

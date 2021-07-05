@@ -1,31 +1,44 @@
 import {
     getSolidDataset,
     getThing,
-    getThingAll,
     setThing,
     getStringNoLocale,
     setStringNoLocale,
     saveSolidDatasetAt,
-    getFile,
+    getDecimal,
+    setDecimal,
+
+    //Possible functions which are unused
+    /*
+    getFile
     isRawData,
     getContentType,
     getSourceUrl,
     getInteger,
     setInteger,
-    getDecimal,
-    setDecimal,
+    getThingAll,
     getPublicAccess,
-    getAgentAccess
+    getAgentAccess */
 } from "@inrupt/solid-client";
-import { Session, handleIncomingRedirect, login, fetch, getDefaultSession } from "@inrupt/solid-client-authn-browser";
+import {
+    handleIncomingRedirect,
+    login,
+    fetch,
+    getDefaultSession,
+    Session
+} from "@inrupt/solid-client-authn-browser";
 
+//connect the buttons and forms
 const buttonLogin = document.getElementById("btnLogin");
 const writeForm = document.getElementById("writeForm");
 const readForm = document.getElementById("readForm");
+const groupForm = document.getElementById("groupForm");
 const infoButton = document.getElementById("infoButton");
 const nullEverything = document.getElementById("nullEverything");
 const folderSubmit = document.getElementById("btnLinkSubmit");
 const groupNameButton = document.getElementById("btnEdit");
+
+//define variables
 var session;
 var webID = "";
 var fileLocation = {
@@ -38,7 +51,7 @@ var fileLocation = {
 }
 var turtledatei = "";
 
-
+//login function, works with every pod-Provider
 function loginToWebProvider(webIDProvider) {
     login({
         oidcIssuer: webIDProvider,
@@ -48,11 +61,8 @@ function loginToWebProvider(webIDProvider) {
     return
 }
 
-buttonLogin.onclick = function() {
-    const webIDProvider = document.getElementById("dropdownID").value;
-    loginToWebProvider(webIDProvider);
-};
-
+//function to handle redirect, and get WebID of the user. For https://nilskl.inrupt.net/profile/card#me it would be "nilskl"
+//The WebID - Name is used for identification in the Splitspense File
 async function handleRedirectAfterLogin() {
     await handleIncomingRedirect();
 
@@ -95,7 +105,7 @@ async function writeData() {
                 var newInt = 0.0;
                 if (members[i] == webID) {
                     newInt = -value / membercount * (membercount - 1) + await getBalance(members[i]);
-                    console.log("members; " + members);
+                    console.log("writeData() -> members; " + members);
                 } else {
                     newInt = value / membercount + await getBalance(members[i]);
                 }
@@ -179,6 +189,7 @@ async function getAllBalances() {
 
 // update the members 
 async function updateGroup() {
+    //Check if the user is Logged in
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
     } else {
@@ -204,92 +215,72 @@ async function updateGroup() {
 
 // Set the folder for this session and update all values
 async function folderSubmitfunc() {
+    //Check if the user is Logged in
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
     } else {
-        fileLocation.base = document.getElementById("folderLink").value;
-        fileLocation.splitspense = fileLocation.base + "/splitspense.ttl";
-        fileLocation.members = fileLocation.base + "/members";
-        fileLocation.name = fileLocation.base + "/name";
-        fileLocation.history = fileLocation.base + "/history";
-        fileLocation.information = fileLocation.base + "/information";
+        if (document.getElementById("folderLink").value == "https://") {
+            alert("Please insert your Folder Link. For help check 'Getting Startet'.");
+        } else {
+            fileLocation.base = document.getElementById("folderLink").value;
 
-        turtledatei = fileLocation.base + "/splitspense.ttl"; //turtledatei muss immer gleich heißen
+            if (fileLocation.base.slice(-1) == "/") {} else { fileLocation.base += "/"; }
 
-        console.log(fileLocation);
+            fileLocation.splitspense = fileLocation.base + "/splitspense.ttl";
+            fileLocation.members = fileLocation.base + "/members";
+            fileLocation.name = fileLocation.base + "/name";
+            fileLocation.history = fileLocation.base + "/history";
+            fileLocation.information = fileLocation.base + "/information";
 
-        const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
-        const profile = getThing(myDataset, turtledatei);
-        const allmembers = getStringNoLocale(profile, fileLocation.members);
-        var groupinformation = getStringNoLocale(profile, fileLocation.information);
+            turtledatei = fileLocation.base + "/splitspense.ttl"; //turtledatei muss immer gleich heißen
 
-        document.getElementById("input_members").value = allmembers;
-        document.getElementById("group_value").value = allmembers;
-        document.getElementById("groupinformation").value = groupinformation;
+            console.log("folderSubmitfunc() -> fileLocation: " + fileLocation);
 
-        console.log("webid gepseichert" + groupinformation);
-        getAllBalances();
+            const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
+            const profile = getThing(myDataset, turtledatei);
+            const allmembers = getStringNoLocale(profile, fileLocation.members);
+            var groupinformation = getStringNoLocale(profile, fileLocation.information);
+
+            document.getElementById("input_members").value = allmembers;
+            document.getElementById("group_value").value = allmembers;
+            document.getElementById("groupinformation").value = groupinformation;
+
+            console.log("WebID gepseichert ");
+            getAllBalances();
+        }
     }
 }
 
-
+//Changing the Group description
 async function editGroupName() {
+
+    //Check if the user is Logged in
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
     } else {
-        const newgroupinformation = document.getElementById("groupinformation").value;
+        //Check if the Folder Link is provided 
+        if (document.getElementById("folderLink").value == "https://") {
+            alert("Please insert your Folder Link. For help check 'Getting Startet'.");
+        } else {
 
+            //get the new value of the input field "groupinformation" form the html file
+            const newgroupinformation = document.getElementById("groupinformation").value;
 
-        const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
+            //recieve the solid Dataset and save the
+            const myDataset = await getSolidDataset(turtledatei, { fetch: fetch });
+            const profile = getThing(myDataset, turtledatei);
+            let updatedProfile = setStringNoLocale(profile, fileLocation.information, newgroupinformation);
+            const myChangedDataset = setThing(myDataset, updatedProfile);
+            const savedProfileResource = await saveSolidDatasetAt(
+                turtledatei,
+                myChangedDataset, { fetch: fetch });
 
-        const profile = getThing(myDataset, turtledatei);
-
-        let updatedProfile = setStringNoLocale(profile, fileLocation.information, newgroupinformation);
-
-        const myChangedDataset = setThing(myDataset, updatedProfile);
-        const savedProfileResource = await saveSolidDatasetAt(
-            turtledatei,
-            myChangedDataset, { fetch: fetch });
-        return newgroupinformation;
+            document.getElementById("labelStatusgroup").innerHTML = "New Group description saved!";
+            document.getElementById("labelStatusgroup").setAttribute("role", "alert");
+        }
     }
-
 }
-
-readForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    getAllBalances();
-});
-
-writeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    writeData();
-});
-
-groupForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    updateGroup();
-});
-
-folderSubmit.onclick = function() {
-    folderSubmitfunc();
-}
-
-infoButton.onclick = function() {
-    //console.log(webID + ":WebID");
-    //console.log(session);
-
-    // createEmptyDocument(fileLocation.base);
-    //getPublicAccessfunc();
-    console.log("Button is functioning")
-
-}
-
-groupNameButton.onclick = function() {
-    editGroupName();
-    document.getElementById("labelStatusgroup").innerHTML = "New Group description saved!";
-    document.getElementById("labelStatusgroup").setAttribute("role", "alert");
-}
-
+//Reset all data in the File to start over again. 
 nullEverything.onclick = async function() {
     if (session.info.isLoggedIn == false) {
         alert("You are not logged in. To continue please login.");
@@ -320,4 +311,55 @@ nullEverything.onclick = async function() {
             getAllBalances();
         } else {}
     }
+}
+
+//Connection between HTML Buttons and JS
+//Button: Get Balance 
+readForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    console.log("Get Balances: Button is functioning")
+    getAllBalances();
+});
+
+//Button: Insert expesne 
+writeForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    console.log("Insert expense: Button is functioning")
+    writeData();
+});
+
+//Button: Update Group 
+groupForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    console.log("Update Group: Button is functioning")
+    updateGroup();
+});
+
+//Button: Login
+buttonLogin.onclick = function() {
+    console.log("Login: Button is functioning")
+    const webIDProvider = document.getElementById("dropdownID").value;
+    loginToWebProvider(webIDProvider);
+};
+
+//Button: Submit 
+folderSubmit.onclick = function() {
+        console.log("Submit: Button is functioning")
+        folderSubmitfunc();
+    }
+    //Button: Save
+groupNameButton.onclick = async function() {
+    console.log("Save: Button is functioning")
+    editGroupName();
+}
+
+//Button: Console Log Info
+infoButton.onclick = async function() {
+    console.log(webID + ":WebID");
+    //console.log(session);
+
+    // createEmptyDocument(fileLocation.base);
+    //getPublicAccessfunc();
+    console.log("Button is functioning")
+
 }

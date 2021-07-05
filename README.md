@@ -7,17 +7,19 @@ Ein Beispielvideo findet ihr hier: https://uni-muenster.sciebo.de/s/LETl8XqovuPR
 # mysolidapp
 
 
-npm install @inrupt/solid-client @inrupt/solid-client-authn-browser @inrupt/vocab-common-rdf 
+npm install @inrupt/solid-client @inrupt/solid-client-authn-browser
 npm install webpack webpack-cli webpack-dev-server css-loader style-loader  --save-dev
 npm start
 
 
 # Docker
-Folgende Befehle ausführen, um die Applikation zu erstellen bzw. zu starten. Grundkenntnisse über Docker sollten vorhanden sein.
+You can use the following commands to test the App with Docker. The requirement is that you have installed Docker, more on that here: [Get Docker](https://docs.docker.com/get-docker/)
 
 ## Ubuntu
-**Build Image**
-sudo docker build -t mysolidapp . 
+
+Start with **building the image**.
+Linux: ```sudo docker build -t splitspense . ```
+Windows: ``` docker build -t splitspense . ```
 
 **Create Container an run**
 sudo docker run -p 3000:3000 --name mysolidapp -d mysolidapp
