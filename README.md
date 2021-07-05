@@ -15,33 +15,44 @@ npm start
 # Docker
 You can use the following commands to test the App with Docker. The requirement is that you have installed Docker, more on that here: [Get Docker](https://docs.docker.com/get-docker/)
 
-## Ubuntu
+## Pull the image from Docker Hub
+sudo docker pull niklx/solid_splitspense:1.0.0
+sudo docker run -p 8080:8080 niklx/solid_splitspense:1.0.0
+
+The App is running on your localhost:8080.
+
+## Build Image by yourself
+First change in webpack.conf.js the field 
+ ```   devServer: {
+        contentBase: "./",
+        host: 'localhost',
+        port: 8080
+    }, ```
+to
+ ```   devServer: {
+        contentBase: "./",
+        host: '0',
+        port: 8080
+    }, ```
+
 
 Start with **building the image**.
 Linux: ```sudo docker build -t splitspense . ```
 Windows: ``` docker build -t splitspense . ```
 
-**Create Container an run**
-sudo docker run -p 3000:3000 --name mysolidapp -d mysolidapp
+**Create the Container an run**
+Linux: ```sudo docker run -p 3000:3000 --name splitspense -d splitspense```
+Windows: ```docker run -p 3000:3000 --name splitspense -d splitspense```
 
 **Stop Container**
-sudo docker stop mysolidapp
+Linux: ```sudo docker stop splitspense```
+Windows: ```docker stop splitspense```
 
 **Restart Container**
-sudo docker start mysolidapp
+Linux: ```sudo docker start splitspense```
+Windows: ```docker start splitspense```
 
-## Windows
-**Build Image**
-docker build -t mysolidapp . 
 
-**Create Container an run**
-docker run -p 3000:3000 --name mysolidapp -d mysolidapp
-
-**Stop Container**
-docker stop mysolidapp
-
-**Restart Container**
-docker start mysolidapp
 
 ## Hilfreiche Links für das Programmieren einer Solid-App
 * [Bestehende Solid Apps](https://solidproject.org/apps) anhand dere ein guter Überblick geschaffen werden kann.
@@ -54,5 +65,4 @@ docker start mysolidapp
 * [Tripledoc - Writing a Solid App](https://vincenttunru.gitlab.io/tripledoc/docs/writing-a-solid-app/writing-a-solid-app.html) guter Stepbystep Guide mit stärkerem Fokus auf LinkedData und verwendum des FOAF Vokabulars
 
 * [Dockerizing a Node.js](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/) ist ein Guter Guide mit dem man ein Dockerfile für die Solid-App erstellen kann. 
-* 
 

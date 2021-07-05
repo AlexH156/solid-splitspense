@@ -1,5 +1,5 @@
 const path = require("path");
-
+console.log('The code is executed at localhost:8080');
 module.exports = {
 
     mode: "development",
