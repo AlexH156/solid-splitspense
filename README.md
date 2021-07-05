@@ -3,14 +3,6 @@ This Application was developed for a Project at WWU Münster, Germany. It can be
 The content is provided by [AlexH156](https://github.com/AlexH156) and [NilKl00](https://github.com/NilKl00). We are students at WWU in Münster, Germany.
 Parts of the Programming are inspired by the Tutorial from Inrupt: [Inrupt: Getting Started](https://docs.inrupt.com/developer-tools/javascript/client-libraries/tutorial/getting-started/)
 
-# Use Splitspense with Node and Webpack for development
-npm --version 6.14.13
-node --version 14.17.2
-
-npm install @inrupt/solid-client @inrupt/solid-client-authn-browser
-npm install webpack webpack-cli webpack-dev-server css-loader style-loader  --save-dev
-npm start
-
 
 # Docker
 You can use the following commands to test the App with Docker. The requirement is that you have installed Docker, more on that here: [Get Docker](https://docs.docker.com/get-docker/)
@@ -18,8 +10,8 @@ You can use the following commands to test the App with Docker. The requirement 
 ## Pull the image from Docker Hub
 Here is the Docker Image on Docker Hub: [niklx/solid_splitspense](https://hub.docker.com/r/niklx/solid_splitspense/tags?page=1&ordering=last_updated)
 
-sudo docker pull niklx/solid_splitspense:1.0.0
-sudo docker run -p 8080:8080 niklx/solid_splitspense:1.0.0
+sudo docker pull niklx/solid_splitspense:1.0.1
+sudo docker run -p 8080:8080 niklx/solid_splitspense:1.0.1
 
 The App is running on your localhost:8080.
 
@@ -59,7 +51,13 @@ Windows: ```docker stop splitspense```
 Linux: ```sudo docker start splitspense```
 Windows: ```docker start splitspense```
 
+# Use Splitspense with Node and Webpack for development
+npm --version 6.14.13
+node --version 14.17.2
 
+npm install @inrupt/solid-client @inrupt/solid-client-authn-browser
+npm install webpack webpack-cli webpack-dev-server css-loader style-loader  --save-dev
+npm start
 
 ## Hilfreiche Links für das Programmieren einer Solid-App
 * [Bestehende Solid Apps](https://solidproject.org/apps) anhand dere ein guter Überblick geschaffen werden kann.
