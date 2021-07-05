@@ -7,6 +7,7 @@ import {
     saveSolidDatasetAt,
     getDecimal,
     setDecimal,
+    addLiteral,
 
     //Possible functions which are unused
     /*
@@ -37,6 +38,7 @@ const infoButton = document.getElementById("infoButton");
 const nullEverything = document.getElementById("nullEverything");
 const folderSubmit = document.getElementById("btnLinkSubmit");
 const groupNameButton = document.getElementById("btnEdit");
+const logoutButton = document.getElementById("logoutButton");
 
 //define variables
 var session;
@@ -362,4 +364,9 @@ infoButton.onclick = async function() {
     //getPublicAccessfunc();
     console.log("Button is functioning")
 
+}
+
+logoutButton.onclick = function() {
+    location.reload();
+    alert("You are logged out!")
 }
