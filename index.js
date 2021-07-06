@@ -54,12 +54,16 @@ var turtledatei = "";
 
 //login function, works with every pod-Provider
 function loginToWebProvider(webIDProvider) {
-    login({
-        oidcIssuer: webIDProvider,
-        redirectUrl: window.location.href,
-        clientName: "Splitspense"
-    });
-    return
+    if (webIDProvider == "https://" || webIDProvider == "") {
+        alert("Please Login!");
+    } else {
+        login({
+            oidcIssuer: webIDProvider,
+            redirectUrl: window.location.href,
+            clientName: "Splitspense"
+        });
+        return
+    }
 }
 
 //function to handle redirect, and get WebID of the user. For https://nilskl.inrupt.net/profile/card#me it would be "nilskl"
@@ -221,7 +225,7 @@ async function folderSubmitfunc() {
         alert("You are not logged in. To continue please login.");
     } else {
         if (document.getElementById("folderLink").value == "https://") {
-            alert("Please insert your Folder Link. For help check 'Getting Startet'.");
+            alert("Please insert your Folder Link. For help check 'Getting Started'.");
         } else {
             fileLocation.base = document.getElementById("folderLink").value;
 
@@ -261,7 +265,7 @@ async function editGroupName() {
     } else {
         //Check if the Folder Link is provided 
         if (document.getElementById("folderLink").value == "https://") {
-            alert("Please insert your Folder Link. For help check 'Getting Startet'.");
+            alert("Please insert your Folder Link. For help check 'Getting Started'.");
         } else {
 
             //get the new value of the input field "groupinformation" form the html file
