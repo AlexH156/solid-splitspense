@@ -43,26 +43,25 @@ devServer: {
     
 ```
 
-Start with **building the image**.
+### Start with **building the image**.
 Linux: ```sudo docker build -t splitspense . ```
 Windows: ``` docker build -t splitspense . ```
 
-**Create the Container an run**
+### **Create the Container an run**
 Linux: ```sudo docker run -p 3000:3000 --name splitspense -d splitspense```
 Windows: ```docker run -p 3000:3000 --name splitspense -d splitspense```
 
-**Stop Container**
+### **Stop Container**
 Linux: ```sudo docker stop splitspense```
 Windows: ```docker stop splitspense```
 
-**Restart Container**
+### **Restart Container**
 Linux: ```sudo docker start splitspense```
 Windows: ```docker start splitspense```
 
-**Remove Container to start a new one with the same Name**
+### **Remove Container to start a new one with the same Name**
 Linux: ```sudo docker rm splitspense```
 Windows: ```docker rm splitspense```
-
 
 # Use Splitspense with Node and Webpack for development
 npm --version 6.14.13
