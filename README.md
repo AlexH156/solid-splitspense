@@ -70,10 +70,14 @@ docker run -p 3000:3000 --name splitspense -d splitspense
 ```
 
 ### **Stop Container**
-Linux: ```
+Linux:
+```
 sudo docker stop splitspense
 ```
-Windows: ```docker stop splitspense```
+Windows: 
+```
+docker stop splitspense
+```
 
 ### **Restart Container**
 Linux: 
@@ -96,13 +100,18 @@ docker rm splitspense
 ```
 
 # Use Splitspense with Node and Webpack for development
+
 npm --version 6.14.13
-
 node --version 14.17.2
-
+```
 npm install @inrupt/solid-client @inrupt/solid-client-authn-browser
+```
+```
 npm install webpack webpack-cli webpack-dev-server css-loader style-loader  --save-dev
+```
+```
 npm start
+```
 
 ## Hilfreiche Links für das Programmieren einer Solid-App
 * [Bestehende Solid Apps](https://solidproject.org/apps) anhand dere ein guter Überblick geschaffen werden kann.
