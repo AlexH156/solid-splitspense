@@ -10,8 +10,9 @@ You can use the following commands to test the App with Docker. The requirement 
 ## Pull the image from Docker Hub
 Here is the Docker Image on Docker Hub: [niklx/solid_splitspense](https://hub.docker.com/r/niklx/solid_splitspense/tags?page=1&ordering=last_updated)
 **Linux:**
-```sudo docker pull niklx/solid_splitspense:1.0.3
-sudo docker run -p 8080:8080 -d --name splitspense niklx/solid_splitspense:1.0.3```
+sudo docker pull niklx/solid_splitspense:1.0.3
+sudo docker run -p 8080:8080 -d --name splitspense niklx/solid_splitspense:1.0.3
+
 
 **Windows:**
 ```docker run -p 8080:8080 -d --name splitspense niklx/solid_splitspense:1.0.3
