@@ -19,7 +19,7 @@ Linux: ```sudo docker run -p 8080:8080 -d --name splitspense niklx/solid_splitsp
 Windows: ```docker run -p 8080:8080 -d --name splitspense niklx/solid_splitspense:1.0.3```
 
 
-The App is running on your localhost:8080.
+The App is running on your **[localhost:8080](localhost:8080)**.
 
 If not sure if this is the latest version, check [niklx/solid_splitspense](https://hub.docker.com/r/niklx/solid_splitspense/tags?page=1&ordering=last_updated) for the latest update.
 
