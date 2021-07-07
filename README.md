@@ -1,3 +1,8 @@
+# Splitspense
+Splitspense helps you to share expenses with others. Very useful for house-sharing, events and holidays. 
+You only need Docker to test the application.
+
+
 # Getting Started 
 This Application was developed for a Project at WWU Münster, Germany. It can be used with the Solid Plattform, and should give the opportunity to learn simple programming and the use of the Solid Plattform.
 The content is provided by [AlexH156](https://github.com/AlexH156) and [NilKl00](https://github.com/NilKl00). We are students at WWU in Münster, Germany.
