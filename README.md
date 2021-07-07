@@ -102,6 +102,7 @@ docker rm splitspense
 # Use Splitspense with Node and Webpack for development
 
 npm --version 6.14.13
+
 node --version 14.17.2
 ```
 npm install @inrupt/solid-client @inrupt/solid-client-authn-browser
